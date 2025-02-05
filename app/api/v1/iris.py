@@ -20,7 +20,6 @@ class Query(Resource):
         data = api.payload
         print(data)
         print(data.get('query'))
-        search = vs.search(data.get('query'))
 
-        return {'answer': search}, 200
+        return {'answer': 'holu'}, 200
 
