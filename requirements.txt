@@ -1,2 +1,4 @@
-flask
-flask-restx
+Flask
+Flask-RESTx
+requests
+python-dotenv
