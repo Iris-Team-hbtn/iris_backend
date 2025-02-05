@@ -1,4 +1,9 @@
-Flask
-Flask-RESTx
 requests
 python-dotenv
+pyrebase4
+pypdf2
+sentence-transformers
+faiss-cpu
+spacy
+flask
+flask-restx
