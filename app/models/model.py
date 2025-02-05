@@ -1,5 +1,5 @@
 import pyrebase
-import vectorstore
+from app.models.vectorstore import VectorStore as vectorstore
 
 firebaseConfig = {
   'apiKey': "AIzaSyANGIbB4Ckqv8QxPcEa2shZrr3nJ-uo4LY",
@@ -11,12 +11,13 @@ firebaseConfig = {
   'databaseURL': ""
 }
 
-firebase = pyrebase.initialize_app(firebaseConfig)
-storage = firebase.storage()
+def createVS():
+  firebase = pyrebase.initialize_app(firebaseConfig)
+  storage = firebase.storage()
 
-storage.child("protocolo.pdf").download(filename="protocol.pdf", path="./")
+  storage.child("protocolo.pdf").download(filename="protocol.pdf", path="./")
 
-vs = vectorstore.VectorStore('./protocol.pdf')
+  vs = vectorstore('./protocol.pdf')
 
-result = vs.search('Tratamiento capilar')
-print(result)
+  result = vs.search('Tratamiento capilar')
+  print(result)
