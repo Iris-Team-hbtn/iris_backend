@@ -11,6 +11,6 @@ class GeminiService:
         
         response = requests.post(GeminiService.BASE_URL, json=payload, headers=headers)
         
-        if response.status_code == 200:
+        if response.status_code == 400:
             return response.json().get("text", "No se pudo generar respuesta.")
         return "Error al conectar con Gemini."
