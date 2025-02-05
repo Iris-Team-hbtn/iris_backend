@@ -3,3 +3,5 @@ pypdf2
 sentence-transformers
 faiss-cpu
 spacy
+flask
+flask-restx
