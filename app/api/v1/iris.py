@@ -1,25 +1,28 @@
 from flask_restx import Namespace, Resource, fields
-
+from app.models.chatbot import Chatbot
 
 api = Namespace('iris', description='iris endpoints')
 
-# Define the review model for input validation and documentation
-review_model = api.model('Iris', {
+model = api.model('Iris', {
     'query': fields.String(required=True, description='Question for Iris')
 })
 
-@api.route('/')
+chatbot = Chatbot()
+
+@api.route('/message')
 class Query(Resource):
-    @api.expect(review_model)
+    @api.expect(model)
     @api.response(200, 'Answer retrieved correctly')
     @api.response(400, 'Invalid input data')
     @api.response(404, 'There is no information about this')
     def post(self):
-
         """A question is received"""
         data = api.payload
-        print(data)
-        print(data.get('query'))
+        if not data or "query" not in data:
+            return {"error": "Invalid input data."}, 400
 
-        return {'answer': 'holu'}, 200
+        response = chatbot.process_message(data["query"])
 
+        if not response:
+            return {"error": "There is no information about this."}, 404
+        return {"response": response}, 200

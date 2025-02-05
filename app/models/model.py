@@ -18,6 +18,3 @@ def createVS():
   storage.child("protocolo.pdf").download(filename="protocol.pdf", path="./")
 
   vs = vectorstore('./protocol.pdf')
-
-  result = vs.search('Tratamiento capilar')
-  print(result)

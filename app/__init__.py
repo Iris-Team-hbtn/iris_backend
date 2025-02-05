@@ -5,17 +5,10 @@ from app.api.v1.iris import api as iris_ns
 
 def create_app():
     app = Flask(__name__)
-    api = Api(app, version='1.0', title='Iris API', description='Iris Application API', doc='/api/v1/')
+    api = Api(app, version='1.0', title='Iris API', description='Iris Application API')
 
-    createVS()
+    #createVS()
 
-    api.add_namespace(iris_ns, path='/api/v1/iris')
-
-    # Registrar el Blueprint con los endpoints del chatbot
-    app.register_blueprint(api_bp, url_prefix="/api/v1")
+    api.add_namespace(iris_ns, path='/iris')
 
     return app
-
-if __name__ == "__main__":
-    app = create_app()
-    app.run(debug=True)
