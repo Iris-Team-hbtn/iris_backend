@@ -1,43 +1,46 @@
-import requests
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_google_genai import ChatGoogleGenerativeAI
 import os
-import google.generativeai as genai
+from dotenv import load_dotenv
+from flask import current_app
 
-class GeminiService:
+def get_vs():
+    with current_app.app_context():
+        return current_app.config["vs"]
 
+class IrisAI:
     def __init__(self):
-        genai.configure(api_key=os.environ["GEMINI_API_KEY"])
-        generation_config = {
-            "temperature": 1,
-            "top_p": 0.95,
-            "top_k": 40,
-            "max_output_tokens": 8192,
-            "response_mime_type": "text/plain",
-            }
-        model = genai.GenerativeModel(model_name="gemini-1.5-flash",generation_config=generation_config,)
-        system_prompt = """You are a virtual assistant specialized in aesthetic health. Your goal is to provide accurate and useful information about aesthetic treatments, answer frequently asked questions, and help users schedule appointments with the clinic. You should also identify potential clients and guide them towards a consultation with specialists.
-        Rules:
-        1. You do not offer medical diagnoses or personalized treatments. Always recommend a consultation with a professional.
-        2. You only provide information based on aesthetic treatments available at the clinic.
-        3. If the user requests to schedule an appointment, collect their name, phone number, and time preference.
-        4. If the user has questions about prices, mention that costs may vary and suggest a consultation for more details.
-        5. You are friendly, professional, and direct in your responses.
-        Example of Correct Response:
-        *User:* "What is the best treatment for wrinkles?"
-        *Chatbot:* "There are several treatments like botox and hyaluronic acid. Their benefits are (...). I recommend scheduling a consultation with our specialists for a personalized evaluation. Would you like to schedule an appointment?"
-        ### :x: Avoid:
-        - Providing detailed medical advice.
-        - Responding outside the topic of aesthetics.
-        - Making promises about specific results.
-        Always guide the conversation towards a consultation with a specialist when necessary.
-        We can set this to set more rules and avoid conversations out of the role"""
-        
-        system_prompt += "\nIf the patient ask for something out of aesthetic medicine, simply response. Sorry, i can't help yoy with that, please ask me something about aesthetic medicine!"
-        self.chat_session = model.start_chat(history=[{"role": "system", "parts": [{"text": system_prompt}]}])
+        load_dotenv()
+        self._google_api_key = os.getenv("GOOGLE_API_KEY")
+        self.llm = ChatGoogleGenerativeAI(
+            model="gemini-1.5-flash-8b",
+            temperature=1,
+            max_tokens=None,
+            timeout=None,
+            max_retries=2,
+        )
+        self.chat_history = "Iris: ¡Hola! Mi nombre es Iris, estoy aquí para responder cualquier duda que tengas sobre nuestros tratamientos en Holberton.\n"
 
-    def generate_response(self, user_message):
-        response = self.chat_session.send_message(user_message)
-        text = response.candidates[0].content.parts[0].text
-        if text:
-            return text
-        return "No se pudo generar una respuesta con Gemini"
-    
+    def send_message(self, user_message):
+        vs = get_vs()
+        text = vs.search(user_message)
+        prompt = ChatPromptTemplate.from_messages(
+            [
+                (
+                    "system",
+                    "Tu eres Iris, una asistente virtual que asiste a una clínica de estética real llamada Holberton, usuarios te harán preguntas sobre los tratamientos de la clínica, debes responder desarrollando con la siguiente información: {text}. Debes seguir el hilo de la conversación, el historial de la conversación es: {chat_history}",
+                ),
+                ("human", "{input}"),
+            ]
+        )
+        chain = prompt | self.llm
+        response = chain.invoke(
+            {
+                "chat_history": self.chat_history,
+                "text": text,
+                "input": user_message,
+            }
+        )
+        self.chat_history += f"Human: {user_message}\n"
+        self.chat_history += f"Iris: {response.content}\n"
+        return response.content

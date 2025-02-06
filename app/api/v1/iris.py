@@ -1,5 +1,5 @@
 from flask_restx import Namespace, Resource, fields
-from app.models.chatbot import Chatbot
+from app.services.gemini_service import IrisAI
 
 api = Namespace('iris', description='iris endpoints')
 
@@ -7,7 +7,7 @@ model = api.model('Iris', {
     'query': fields.String(required=True, description='Question for Iris')
 })
 
-chatbot = Chatbot()
+chatbot = IrisAI()
 
 @api.route('/message')
 class Query(Resource):
@@ -21,7 +21,7 @@ class Query(Resource):
         if not data or "query" not in data:
             return {"error": "Invalid input data."}, 400
 
-        response = chatbot.process_message(data["query"])
+        response = chatbot.send_message(data["query"])
 
         if not response:
             return {"error": "There is no information about this."}, 404

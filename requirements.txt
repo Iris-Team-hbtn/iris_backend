@@ -8,4 +8,4 @@ spacy
 flask
 flask-restx
 google-generativeai
-
+langchain-google-genai

@@ -1,8 +1,11 @@
 import pyrebase
 from app.models.vectorstore import VectorStore as vectorstore
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 firebaseConfig = {
-  'apiKey': "AIzaSyANGIbB4Ckqv8QxPcEa2shZrr3nJ-uo4LY",
+  'apiKey': os.getenv("FIREBASE_API_KEY"),
   'authDomain': "htbn-final-project.firebaseapp.com",
   'projectId': "htbn-final-project",
   'storageBucket': "htbn-final-project.firebasestorage.app",
@@ -17,4 +20,4 @@ def createVS():
 
   storage.child("protocolo.pdf").download(filename="protocol.pdf", path="./")
 
-  vs = vectorstore('./protocol.pdf')
+  return vectorstore('./protocol.pdf')
