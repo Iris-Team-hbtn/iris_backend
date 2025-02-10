@@ -3,44 +3,62 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 import os
 from dotenv import load_dotenv
 from flask import current_app
+from app.data.prompts import system_prompt
+from typing import List, Dict, Any
 
-def get_vs():
+def get_vs() -> Any:
     with current_app.app_context():
         return current_app.config["vs"]
 
 class IrisAI:
-    def __init__(self):
+    def __init__(self) -> None:
         load_dotenv()
-        self._google_api_key = os.getenv("GOOGLE_API_KEY")
-        self.llm = ChatGoogleGenerativeAI(
+        self._google_api_key: str = os.getenv("GOOGLE_API_KEY", "")
+        self.llm: ChatGoogleGenerativeAI = ChatGoogleGenerativeAI(
             model="gemini-1.5-flash-8b",
-            temperature=1,
+            temperature=0.7,
             max_tokens=None,
             timeout=None,
             max_retries=2,
         )
-        self.chat_history = "Iris: ¡Hola! Mi nombre es Iris, estoy aquí para responder cualquier duda que tengas sobre nuestros tratamientos en Holberton.\n"
+        self.chat_history: List[Dict[str, str]] = []
 
-    def send_message(self, user_message):
-        vs = get_vs()
-        text = vs.search(user_message)
-        prompt = ChatPromptTemplate.from_messages(
-            [
-                (
-                    "system",
-                    "Tu eres Iris, una asistente virtual que asiste a una clínica de estética real llamada Holberton, usuarios te harán preguntas sobre los tratamientos de la clínica, debes responder desarrollando con la siguiente información: {text}. Debes seguir el hilo de la conversación, el historial de la conversación es: {chat_history}",
-                ),
-                ("human", "{input}"),
-            ]
-        )
-        chain = prompt | self.llm
-        response = chain.invoke(
-            {
-                "chat_history": self.chat_history,
-                "text": text,
-                "input": user_message,
-            }
-        )
-        self.chat_history += f"Human: {user_message}\n"
-        self.chat_history += f"Iris: {response.content}\n"
+    def call_iris(self, user_input: str) -> str:
+        """
+        Procesa la entrada del usuario a través del modelo Gemini manteniendo el historial del chat.
+        Este método toma la entrada del usuario, la combina con el prompt del sistema y el historial del chat,
+        y genera una respuesta usando el modelo Gemini. El historial de la conversación se actualiza
+        después de cada interacción.
+
+        Args:
+            user_input (str): El mensaje de texto del usuario para ser procesado por el modelo.
+
+        Returns:
+            str: La respuesta generada por el modelo Gemini.
+
+        Notas:
+            - Mantiene el contexto de la conversación a través del chat_history
+            - Cada interacción se almacena como un par usuario-asistente
+            - Incluye el prompt del sistema en cada llamada
+        """
+        system_message_content: str = system_prompt()
+        messages: List[Dict[str, str]] = [{"role": "system", "content": system_message_content}]
+        
+        # Añadir el historial de chat a los mensajes
+        for entry in self.chat_history:
+            messages.append({"role": "assistant", "content": entry["assistant"]})
+            messages.append({"role": "user", "content": entry["user"]})
+        
+        # Añadir el nuevo mensaje del usuario
+        messages.append({"role": "user", "content": user_input})
+        
+        # Generar la respuesta utilizando gemini
+        response = self.llm.invoke(messages)
+        
+        # Actualizar el historial de chat
+        self.chat_history.append({"user": user_input, "assistant": response.content})
+        
         return response.content
+
+    def send_message(self, user_message: str) -> str:
+        return self.call_iris(user_message)

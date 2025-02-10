@@ -1,2 +1,3 @@
 protocol.pdf
 __pycache__/
+.env
