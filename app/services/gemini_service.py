@@ -4,11 +4,11 @@ import os
 from dotenv import load_dotenv
 from flask import current_app
 from app.data.prompts import system_prompt
-from app.services.toolkits import get_or_create_user_id
 
 def get_vs():
     with current_app.app_context():
         return current_app.config["vs"]
+
 
 class IrisAI:
     def __init__(self):
@@ -22,7 +22,7 @@ class IrisAI:
             max_retries=2,
         )
         # Usar un diccionario para almacenar el historial de chat por usuario
-        self.chat_history = {}
+        self.chat_history = {" Hola, mi nombre es Iris, estoy aqui para ayudarte con tus consultas acerca de la estética capilar"}
 
     def call_iris(self, user_input, user_id):
         """
@@ -48,11 +48,17 @@ class IrisAI:
 
         vs = get_vs()
         text = vs.search(user_input)
+        print(vs)
+        print(text)
 
         # Combina el prompt del sistema con el resultado de la búsqueda
         system_message_content = system_prompt() + "\n" + text
+        print(system_message_content)
         system_message_content += "'\n Responde en formato Markdown"
+        print("\n")
+        print(system_message_content)
         messages = [{"role": "system", "content": system_message_content}]
+        print('\n', messages)
 
         # Añadir el historial de chat a los mensajes
         for entry in chat_history:
