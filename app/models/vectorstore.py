@@ -44,4 +44,4 @@ class VectorStore:
             for dist, i in zip(distances[0], indices[0])
             if dist <= distance_threshold
         ]
-        return results
+        return " ".join(results)

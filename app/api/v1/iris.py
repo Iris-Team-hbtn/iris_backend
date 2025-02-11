@@ -10,7 +10,7 @@ model = api.model('Iris', {
 
 chatbot = IrisAI()
 
-@api.route('/message')
+@api.route('/chat')
 class Query(Resource):
     @api.expect(model)
     @api.response(200, 'Answer retrieved correctly')

@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from flask import current_app
 from app.data.prompts import system_prompt
 from typing import List, Dict, Any
+# from app.services.toolkits import contar, get_treatment_price
 
 def get_vs() -> Any:
     with current_app.app_context():
@@ -16,19 +17,17 @@ class IrisAI:
         self._google_api_key: str = os.getenv("GOOGLE_API_KEY", "")
         self.llm: ChatGoogleGenerativeAI = ChatGoogleGenerativeAI(
             model="gemini-1.5-flash-8b",
-            temperature=0.7,
+            temperature=1,
             max_tokens=None,
             timeout=None,
             max_retries=2,
+            # tools = [contar, get_treatment_price]      #Prueba con un toolkit, QUITARRRR
         )
         self.chat_history: List[Dict[str, str]] = []
 
     def call_iris(self, user_input: str) -> str:
         """
         Procesa la entrada del usuario a través del modelo Gemini manteniendo el historial del chat.
-        Este método toma la entrada del usuario, la combina con el prompt del sistema y el historial del chat,
-        y genera una respuesta usando el modelo Gemini. El historial de la conversación se actualiza
-        después de cada interacción.
 
         Args:
             user_input (str): El mensaje de texto del usuario para ser procesado por el modelo.
@@ -41,7 +40,12 @@ class IrisAI:
             - Cada interacción se almacena como un par usuario-asistente
             - Incluye el prompt del sistema en cada llamada
         """
-        system_message_content: str = system_prompt()
+        vs = get_vs()
+        text = vs.search(user_input)
+        
+        # Combina el prompt del sistema con el resultado de la búsqueda
+        system_message_content: str = system_prompt() + "\n" + text
+        system_message_content += "'\n Responde en formato Markdown"
         messages: List[Dict[str, str]] = [{"role": "system", "content": system_message_content}]
         
         # Añadir el historial de chat a los mensajes
