@@ -1,5 +1,8 @@
 # import os
 # import json
+import uuid
+from flask import request, make_response
+
 
 # treatment_prices = {
 #     "IMPLANTE CAPILAR CON DHI": "3850 USD",
@@ -19,3 +22,9 @@
 #     result = treatment_prices.get(asking, "Unknown")
 #     return result
 
+#Creando un identificador unico
+def get_or_create_user_id():
+    user_id = request.cookies.get('user_id')
+    if not user_id:
+        user_id = str(uuid.uuid4())
+    return user_id
