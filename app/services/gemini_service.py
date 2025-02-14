@@ -3,7 +3,7 @@ from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 import os
 from dotenv import load_dotenv
 from app.data.prompts import system_prompt
-from app.services.toolkits import ToolkitService  # Importación corregida
+from app.services.toolkits import ToolkitService
 
 class IrisAI:
     def __init__(self):
@@ -11,7 +11,7 @@ class IrisAI:
         self._google_api_key = os.getenv("GOOGLE_API_KEY", "")
         self.llm = ChatGoogleGenerativeAI(
             model="gemini-1.5-flash-8b",
-            temperature=1,
+            temperature=0.7,
             max_tokens=None,
             timeout=None,
             max_retries=2,

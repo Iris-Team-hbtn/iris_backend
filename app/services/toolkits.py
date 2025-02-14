@@ -2,7 +2,7 @@ import uuid
 from flask import request, current_app
 from collections import deque
 
-MAX_HISTORY = 100
+MAX_HISTORY = 5
 
 class ToolkitService:
     def __init__(self):

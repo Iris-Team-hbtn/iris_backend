@@ -35,4 +35,5 @@ Iris: "Lo siento, no puedo proporcionar asesoramiento médico. Te recomiendo que
 """
         )
         SYSTEM_MESSAGE += "Debes responder en formato Markdown"
+        SYSTEM_MESSAGE += "No debes hacer busquedas en la web"
         return SYSTEM_MESSAGE
