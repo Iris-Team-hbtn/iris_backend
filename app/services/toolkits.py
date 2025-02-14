@@ -1,30 +1,32 @@
-# import os
-# import json
 import uuid
-from flask import request, make_response
+from flask import request, current_app
+from collections import deque
 
+MAX_HISTORY = 100
 
-# treatment_prices = {
-#     "IMPLANTE CAPILAR CON DHI": "3850 USD",
-#     "IMPLANTE CAPILAR CON FUE": "2500 USD",
-#     "MESOTERAPIA CAPILAR POR SESION": "100 USD",
-#     "MESOTERAPIA CAPILAR PACK DE 4 SESIONES": "370 USD",
-#     "MESOTERAPIA CAPILAR PACK DE 8 SESIONES": "700 USD"
-#     }
+class ToolkitService:
+    def __init__(self):
+        self.chat_history = {}  # Historial de usuarios con límite
 
-# def contar(a: str):
-#     """returns result"""
-#     result= len(a)
-#     return result
+    def get_vs(self):
+        """Obtiene la instancia del vector store desde la configuración de Flask."""
+        with current_app.app_context():
+            return current_app.config["vs"]
 
-# def get_treatment_price(treatment: str):
-#     asking = treatment.upper()
-#     result = treatment_prices.get(asking, "Unknown")
-#     return result
+    def save_message(self, user_id, user_message, assistant_message):
+        """Guarda un mensaje en el historial del usuario con un límite."""
+        if user_id not in self.chat_history:
+            self.chat_history[user_id] = deque(maxlen=MAX_HISTORY)  # Cola con tamaño máximo
+        
+        self.chat_history[user_id].append({"user": user_message, "assistant": assistant_message})
 
-#Creando un identificador unico
+    def get_chat_history(self, user_id):
+        """Obtiene el historial del usuario si existe."""
+        return list(self.chat_history.get(user_id, []))
+
+# Función para obtener o crear un ID único para el usuario
 def get_or_create_user_id():
-    user_id = request.cookies.get('user_id')
+    user_id = request.cookies.get("user_id")
     if not user_id:
         user_id = str(uuid.uuid4())
     return user_id
