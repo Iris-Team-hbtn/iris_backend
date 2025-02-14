@@ -1,14 +1,14 @@
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 import os
 from dotenv import load_dotenv
 from flask import current_app
 from app.data.prompts import system_prompt
+from collections import deque
 
-def get_vs():
-    with current_app.app_context():
-        return current_app.config["vs"]
-
+# Límite de mensajes en el historial por usuario
+MAX_HISTORY = 5  
 
 class IrisAI:
     def __init__(self):
@@ -21,59 +21,48 @@ class IrisAI:
             timeout=None,
             max_retries=2,
         )
-        # Usar un diccionario para almacenar el historial de chat por usuario
-        self.chat_history = {" Hola, mi nombre es Iris, estoy aqui para ayudarte con tus consultas acerca de la estética capilar"}
+        self.chat_history = {}  # Diccionario con historial limitado por usuario
+
+    def get_vs(self):
+        with current_app.app_context():
+            return current_app.config["vs"]
+
+    def save_message(self, user_id, user_message, assistant_message):
+        """Guarda un mensaje en el historial del usuario con un límite."""
+        if user_id not in self.chat_history:
+            self.chat_history[user_id] = deque(maxlen=MAX_HISTORY)  # Cola con tamaño máximo
+        
+        self.chat_history[user_id].append({"user": user_message, "assistant": assistant_message})
+
+    def get_chat_history(self, user_id):
+        """Obtiene el historial del usuario si existe."""
+        return list(self.chat_history.get(user_id, []))
 
     def call_iris(self, user_input, user_id):
-        """
-        Procesa la entrada del usuario a través del modelo Gemini manteniendo el historial del chat.
+        # Obtener historial de chat limitado
+        chat_history = self.get_chat_history(user_id)
 
-        Args:
-            user_input (str): El mensaje de texto del usuario para ser procesado por el modelo.
-            user_id (str): El identificador único del usuario.
-
-        Returns:
-            str: La respuesta generada por el modelo Gemini.
-
-        Notas:
-            - Mantiene el contexto de la conversación a través del chat_history
-            - Cada interacción se almacena como un par usuario-asistente
-            - Incluye el prompt del sistema en cada llamada
-        """
-        # Si el usuario no tiene historial de chat, inicializarlo
-        if user_id not in self.chat_history:
-            self.chat_history[user_id] = []
-
-        chat_history = self.chat_history[user_id]
-
-        vs = get_vs()
+        # Obtener vector store y resultados de búsqueda
+        vs = self.get_vs()
         text = vs.search(user_input)
-        print(vs)
-        print(text)
 
-        # Combina el prompt del sistema con el resultado de la búsqueda
-        system_message_content = system_prompt() + "\n" + text
-        print(system_message_content)
-        system_message_content += "'\n Responde en formato Markdown"
-        print("\n")
-        print(system_message_content)
-        messages = [{"role": "system", "content": system_message_content}]
-        print('\n', messages)
+        # Construir mensajes
+        system_message_content = system_prompt() + "\n" + text + "\nResponde en formato Markdown"
+        messages = [SystemMessage(content=system_message_content)]
 
-        # Añadir el historial de chat a los mensajes
+        # Añadir historial de chat
         for entry in chat_history:
-            messages.append({"role": "assistant", "content": entry["assistant"]})
-            messages.append({"role": "user", "content": entry["user"]})
+            messages.append(HumanMessage(content=entry["user"]))
+            messages.append(AIMessage(content=entry["assistant"]))
 
-        # Añadir el nuevo mensaje del usuario
-        messages.append({"role": "user", "content": user_input})
+        # Añadir mensaje actual
+        messages.append(HumanMessage(content=user_input))
 
-        # Generar la respuesta utilizando gemini
+        # Generar respuesta
         response = self.llm.invoke(messages)
 
-        # Actualizar el historial de chat
-        chat_history.append({"user": user_input, "assistant": response.content})
-        self.chat_history[user_id] = chat_history
+        # Guardar en historial
+        self.save_message(user_id, user_input, response.content)
 
         return response.content
 
