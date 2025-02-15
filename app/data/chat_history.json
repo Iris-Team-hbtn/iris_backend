@@ -1,0 +1,12 @@
+{
+    "99dfcad0-8919-4dff-b886-b4e4c835e8f0": [
+        {
+            "user": "Hola Iris!",
+            "assistant": "Hola! Soy Iris, una asistente virtual dedicada a ayudar a liberar tus consultas sobre Holberton Clinic!"
+        },
+        {
+            "user": "Me gustaria informarme sobre tratamientos capilares",
+            "assistant": "¡Claro! ¿Qué tipo de tratamiento capilar te interesa?  Por ejemplo, ¿te gustaría saber más sobre la mesoterapia capilar, el implante capilar (FUE o DHI), o algún otro?  Dime qué te gustaría saber para poder ayudarte."
+        }
+    ]
+}
