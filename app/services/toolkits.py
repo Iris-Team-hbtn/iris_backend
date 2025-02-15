@@ -20,15 +20,6 @@ class ToolkitService:
         with current_app.app_context():
             return current_app.config["vs"]
 
-    def save_message(self, user_id, user_message, assistant_message):
-        """Guarda un mensaje en el historial del usuario con un límite."""
-        if user_id not in self.chat_history:
-            self.chat_history[user_id] = deque(maxlen=MAX_HISTORY)  # Crear historial con límite
-
-        self.chat_history[user_id].append({"user": user_message, "assistant": assistant_message})
-        self.message_counter[user_id] = self.message_counter.get(user_id, 0) + 1
-
-
     def _load_chat_history(self, user_id):
         """Loads history chat from json file"""
         if not os.path.exists(self.HISTORY_FILE):
@@ -52,6 +43,8 @@ class ToolkitService:
                     pass
 
         data[str(user_id)] = chat_history
+
+        self.message_counter[user_id] = self.message_counter.get(user_id, 0) + 1
 
         with open(self.HISTORY_FILE, "w", encoding="utf-8") as file:
             json.dump(data, file, ensure_ascii=False, indent=4)
