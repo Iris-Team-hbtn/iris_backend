@@ -25,8 +25,13 @@ class ToolkitService:
         return list(self.chat_history.get(user_id, []))
 
 # Función para obtener o crear un ID único para el usuario
+from flask import make_response
+
 def get_or_create_user_id():
     user_id = request.cookies.get("user_id")
     if not user_id:
         user_id = str(uuid.uuid4())
+        resp = make_response()
+        resp.set_cookie("user_id", user_id, max_age=24*60*60)  # Cookie por 1 día
+        return user_id
     return user_id

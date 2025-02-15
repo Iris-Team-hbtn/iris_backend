@@ -24,7 +24,7 @@ class IrisAI:
 
         # Obtener vector store y resultados de búsqueda
         vs = self.toolkit.get_vs()
-        text = vs.search(user_input)
+        text = vs.search(user_input) or "No encontré información relevante en la base de datos."
 
         # Construir mensajes
         system_message_content = system_prompt() + "\n" + text
