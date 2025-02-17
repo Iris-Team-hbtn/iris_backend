@@ -1,5 +1,5 @@
 from flask_restx import Namespace, Resource, fields
-from flask import make_response, jsonify
+from flask import make_response, request
 from app.services.gemini_service import IrisAI
 from app.services.toolkits import get_or_create_user_id
 
@@ -9,7 +9,7 @@ model = api.model('Iris', {
     'query': fields.String(required=True, description='Question for Iris')
 })
 
-chatbot = IrisAI()
+chatbot = IrisAI()  # Aquí está la instancia correcta
 
 @api.route('/chat')
 class Query(Resource):
@@ -19,19 +19,21 @@ class Query(Resource):
     @api.response(404, 'There is no information about this')
     def post(self):
         """A question is received"""
-        data = api.payload
-        if not data or "query" not in data:
-            return {"error": "Invalid input data."}, 400
+        data = request.get_json()
+        user_message = data.get("query", "")
 
-        user_id = get_or_create_user_id()
-        response = chatbot.call_iris(data["query"], user_id)
+        user_id = request.cookies.get("user_id")
+        if not user_id:
+            user_id = get_or_create_user_id()
+            new_user = True
+        else:
+            new_user = False
 
-        if not response:
-            return {"error": "There is no information about this."}, 404
-    
-        #Configuramos la respuesta en cookie
-        resp = {"response": response}
-        response = make_response(jsonify(resp), 200)
-        response.set_cookie('user_id', user_id, max_age=24*60*60)  # cookie solo por 1 dia
-        print(response)
+        response = chatbot.call_iris(user_message, user_id)  # Cambiado `model` por `chatbot`
+
+        # Agregar cookie si es un nuevo usuario
+        if new_user:
+            response = make_response(response)
+            response.set_cookie("user_id", user_id, max_age=24*60*60)
+
         return response
