@@ -17,6 +17,9 @@ class CalendarService:
         self._auth()
 
     def _auth(self):
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        credentials_path = os.path.join(base_dir, "credentials.json") 
+
         if os.path.exists("token.json"):
             self.creds = Credentials.from_authorized_user_file("token.json")
         
@@ -24,7 +27,7 @@ class CalendarService:
             if self.creds and self.creds.expired and self.creds.refresh_token:
                 self.creds.refresh(Request())
             else:
-                flow = InstalledAppFlow.from_client_secrets_file("credentials.json", self.SCOPES)
+                flow = InstalledAppFlow.from_client_secrets_file(credentials_path, self.SCOPES)
                 self.creds = flow.run_local_server(port=0)
 
             with open("token.json", "w") as token:
@@ -33,22 +36,36 @@ class CalendarService:
     def listEvents(self):
         try:
             service = build("calendar", "v3", credentials=self.creds)
-            now = dt.datetime.now().isoformat() + "Z"
-            
-            event_result = service.events().list(calendarId="primary", timeMin=now, maxResults=10, singleEvents=True, orderBy="startTime").execute()
+            now = dt.datetime.now()
+            time_min = now.isoformat() + "Z"
+            time_max = (now + dt.timedelta(weeks=2)).isoformat() + "Z"
+
+            event_result = service.events().list(
+            calendarId="primary",
+            timeMin=time_min,
+            timeMax=time_max,
+            singleEvents=True,
+            orderBy="startTime"
+            ).execute()
+
             events = event_result.get("items", [])
 
             if not events:
                 print("No upcoming events found")
-                return
+                return []
             
+            event_list = []
             for event in events:
                 start = event["start"].get("dateTime", event["start"].get("date"))
+                event_list.append({'date': start})
                 print(start, event["summary"])
+            return event_list
+
         except HttpError as error:
             print("An error occurred:", error)
 
     def createEvent(self, month, day, startTime, email, year=2025):
+        print(month, day, startTime, email, year)
         service = build("calendar", "v3", credentials=self.creds)
 
         start_datetime = dt.datetime(year, month, day, startTime, 0, 0).isoformat()
@@ -74,16 +91,5 @@ class CalendarService:
         }
 
         event = service.events().insert(calendarId="primary", body=event).execute()
-
         print(f"Event created {event.get('htmlLink')}")
-
-
-def main():
-    calendar = CalendarService()
-    calendar.listEvents()
-    calendar.createEvent(2, 18, 9, "santi29ramos@gmail.com")
-    calendar.listEvents()
-
-
-if __name__ == "__main__":
-    main()
+        return event
