@@ -16,12 +16,13 @@ class IrisAI:
             max_tokens=None,
             timeout=None,
             max_retries=2,
-            stream=True
+            stream=True  # Habilitamos el streaming
         )
-        self.toolkit = ToolkitService()  # Instancia de ToolkitService
+        self.toolkit = ToolkitService()
 
-    def call_iris(self, user_input, user_id):
-        # Obtener historial de chat limitado
+    def stream_response(self, user_input, user_id):
+        """Genera respuestas en streaming con Gemini."""
+        # Obtener historial de chat
         chat_history = self.toolkit.get_chat_history(user_id)
 
         # Obtener vector store y resultados de búsqueda
@@ -29,18 +30,18 @@ class IrisAI:
         text = vs.search(user_input) or "No encontré información relevante en la base de datos."
 
         # Construir mensajes
-        system_message_content = system_prompt() + "\n" + text
+        system_message_content = system_prompt() + "\nFuente: protocolo2.pdf\n" + "\n" + text
         messages = [SystemMessage(content=system_message_content)]
 
-        # Añadir historial de chat
+        # Agregar historial de chat
         for entry in chat_history:
             messages.append(HumanMessage(content=entry["user"]))
             messages.append(AIMessage(content=entry["assistant"]))
 
-        # Añadir mensaje actual
+        # Agregar la nueva consulta del usuario
         messages.append(HumanMessage(content=user_input))
 
-        # Generar streaming de respuesta
+        # Función generadora para el streaming
         def generate():
             response = self.llm.stream(messages)
             streamed_text = ""
@@ -49,18 +50,8 @@ class IrisAI:
                 streamed_text += content
                 yield content  # Enviar fragmento al cliente
             
-            # Guardar respuesta completa en historial
+            # Guardar respuesta completa en el historial de chat
             self.toolkit.save_message(user_id, user_input, streamed_text)
 
+        # Retornar la respuesta en streaming
         return Response(stream_with_context(generate()), content_type="text/plain")
-
-    #     # Generar respuesta
-    #     response = self.llm.invoke(messages)
-
-    #     # Guardar en historial
-    #     self.toolkit.save_message(user_id, user_input, response.content)
-
-    #     return response.content
-
-    # def send_message(self, user_message, user_id):
-    #     return self.call_iris(user_message, user_id)
