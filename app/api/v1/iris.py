@@ -11,6 +11,7 @@ model = api.model('Iris', {
 })
 
 calendar_model = api.model('Calendar', {
+    'fullname': fields.String(required=True, description='Fullname of client'),
     'month': fields.Integer(required=True, description='Month of the appointment'),
     'day': fields.Integer(required=True, description='Day of the appointment'),
     'startime': fields.Integer(required=True, description='Start Time of the appointment'),
