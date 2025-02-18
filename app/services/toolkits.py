@@ -1,5 +1,6 @@
 import uuid
 from flask import request, current_app
+from flask import make_response
 from collections import deque
 
 MAX_HISTORY = 5
@@ -23,9 +24,6 @@ class ToolkitService:
     def get_chat_history(self, user_id):
         """Obtiene el historial del usuario si existe."""
         return list(self.chat_history.get(user_id, []))
-
-# Función para obtener o crear un ID único para el usuario
-from flask import make_response
 
 def get_or_create_user_id():
     user_id = request.cookies.get("user_id")

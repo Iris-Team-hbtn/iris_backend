@@ -1,31 +1,54 @@
 import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
 import os
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from dotenv import load_dotenv
 
-def send_email_to_agent(user_id):
-    # Cargar configuración desde .env
-    sender_email = os.getenv("SENDER_EMAIL")
-    recipient_email = os.getenv("AGENT_EMAIL")
-    smtp_server = os.getenv("SMTP_SERVER")
-    smtp_port = os.getenv("SMTP_PORT")
-    password = os.getenv("EMAIL_PASSWORD")
-    
-    # Crear mensaje
-    subject = "Solicitud de contacto con un agente humano"
-    body = f"El usuario con ID {user_id} ha solicitado contactar con un agente humano."
-    
-    message = MIMEMultipart()
-    message["From"] = sender_email
-    message["To"] = recipient_email
-    message["Subject"] = subject
-    message.attach(MIMEText(body, "plain"))
-    
-    # Enviar el correo
-    try:
-        with smtplib.SMTP_SSL(smtp_server, smtp_port) as server:
-            server.login(sender_email, password)
-            server.sendmail(sender_email, recipient_email, message.as_string())
-        print(f"[INFO] Correo enviado al agente para el usuario {user_id}.")
-    except Exception as e:
-        print(f"[ERROR] No se pudo enviar el correo: {e}")
+load_dotenv()
+
+class MailService:
+    def __init__(self):
+        """Carga la configuración del servidor SMTP desde variables de entorno."""
+        self.smtp_server = os.getenv("SMTP_SERVER")
+        self.smtp_port = int(os.getenv("SMTP_PORT", 587))
+        self.smtp_username = os.getenv("SMTP_USERNAME")  # Correo de la clínica
+        self.smtp_password = os.getenv("SMTP_PASSWORD")
+        self.clinic_email = os.getenv("CLINIC_EMAIL")  # Destinatario
+
+    def send_email(self, user_email, user_question):
+        """Envía un correo con la pregunta del usuario a la clínica."""
+        if not self.smtp_server or not self.smtp_username or not self.smtp_password:
+            raise ValueError("Faltan configuraciones de SMTP en el entorno")
+
+        # Configurar el correo
+        msg = MIMEMultipart()
+        msg["From"] = self.smtp_username
+        msg["To"] = self.clinic_email
+        msg["Subject"] = "Nueva consulta de un usuario"
+
+        # Contenido del correo
+        body = f"""
+        Hola,
+
+        Un usuario ha solicitado asistencia humana. Aquí están los detalles:
+
+        Correo del usuario: {user_email}
+        Pregunta del usuario: {user_question}
+
+        Por favor, pónganse en contacto con el usuario para brindarle asistencia.
+
+        Atentamente,
+        Iris - Asistente Virtual
+        """
+        msg.attach(MIMEText(body, "plain"))
+
+        # Enviar el correo
+        try:
+            with smtplib.SMTP(self.smtp_server, self.smtp_port) as server:
+                server.starttls()  # Asegura la conexión
+                server.login(self.smtp_username, self.smtp_password)
+                server.sendmail(self.smtp_username, self.clinic_email, msg.as_string())
+            return True
+        except Exception as e:
+            print(f"Error enviando correo: {e}")
+            return False

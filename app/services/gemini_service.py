@@ -2,7 +2,6 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 import os
 from dotenv import load_dotenv
-from flask import Response, stream_with_context
 from app.data.prompts import system_prompt
 from app.services.toolkits import ToolkitService
 
@@ -16,42 +15,41 @@ class IrisAI:
             max_tokens=None,
             timeout=None,
             max_retries=2,
-            stream=True  # Habilitamos el streaming
+            stream=True  # Streaming activado
         )
         self.toolkit = ToolkitService()
 
     def stream_response(self, user_input, user_id):
-        """Genera respuestas en streaming con Gemini."""
-        # Obtener historial de chat
+        """Genera respuestas en streaming con Gemini, con formato Markdown."""
         chat_history = self.toolkit.get_chat_history(user_id)
 
-        # Obtener vector store y resultados de búsqueda
         vs = self.toolkit.get_vs()
         text = vs.search(user_input) or "No encontré información relevante en la base de datos."
+        print(text)
 
-        # Construir mensajes
         system_message_content = system_prompt() + "\nFuente: protocolo2.pdf\n" + "\n" + text
         messages = [SystemMessage(content=system_message_content)]
 
-        # Agregar historial de chat
         for entry in chat_history:
             messages.append(HumanMessage(content=entry["user"]))
             messages.append(AIMessage(content=entry["assistant"]))
 
-        # Agregar la nueva consulta del usuario
         messages.append(HumanMessage(content=user_input))
 
-        # Función generadora para el streaming
-        def generate():
-            response = self.llm.stream(messages)
+        def generate_stream():
             streamed_text = ""
-            for chunk in response:
+            for chunk in self.llm.stream(messages):
                 content = chunk.content if chunk.content else ""
-                streamed_text += content
-                yield content  # Enviar fragmento al cliente
-            
-            # Guardar respuesta completa en el historial de chat
+                
+                # 🔹 Ajustamos el formato para que se vea como Gemini
+                if "**" in content or "*" in content or "-" in content:
+                    formatted_chunk = content  # Ya tiene formato
+                else:
+                    formatted_chunk = f"\n{content}"  # Agregamos saltos de línea
+                
+                streamed_text += formatted_chunk
+                yield formatted_chunk
+
             self.toolkit.save_message(user_id, user_input, streamed_text)
 
-        # Retornar la respuesta en streaming
-        return Response(stream_with_context(generate()), content_type="text/plain")
+        return generate_stream()  # Devuelve el generador
