@@ -1,14 +1,24 @@
 from flask_restx import Namespace, Resource, fields
-from flask import make_response, jsonify
+from flask import request, Response
 from app.services.gemini_service import IrisAI
 from app.services.calendar_service import CalendarService
 from app.services.toolkits import get_or_create_user_id
+from app.services.mail_service import MailService
+
 
 api = Namespace('iris', description='iris endpoints')
 
 model = api.model('Iris', {
-    'query': fields.String(required=True, description='Question for Iris')
-})
+    'query': fields.String(required=True, description='Pregunta para Iris'),
+},)
+
+email_model = api.model(
+    'EmailRequest',
+    {
+        'email': fields.String(required=True, description='Correo del usuario'),
+        'question': fields.String(required=True, description='Pregunta del usuario'),
+    },
+)
 
 calendar_model = api.model('Calendar', {
     'fullname': fields.String(required=True, description='Fullname of client'),
@@ -21,21 +31,22 @@ calendar_model = api.model('Calendar', {
 
 chatbot = IrisAI()
 calendar = CalendarService()
+mail_service = MailService()
 
-@api.route('/chat')
+@api.route("/chat")
 class Query(Resource):
     @api.expect(model)
-    @api.response(200, 'Answer retrieved correctly')
-    @api.response(400, 'Invalid input data')
-    @api.response(404, 'There is no information about this')
+    @api.response(200, "Respuesta obtenida correctamente")
+    @api.response(400, "Datos de entrada inválidos")
+    @api.response(404, "No hay información disponible")
     def post(self):
-        """A question is received"""
+        """Procesa una pregunta y devuelve la respuesta de Iris en streaming"""
         data = api.payload
         if not data or "query" not in data:
-            return {"error": "Invalid input data."}, 400
+            return {"error": "Datos de entrada inválidos."}, 400
 
         user_id = get_or_create_user_id()
-        response = chatbot.call_iris(data["query"], user_id)
+        user_question = data["query"]
 
         if not response:
             return {"error": "There is no information about this."}, 404

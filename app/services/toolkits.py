@@ -2,6 +2,7 @@ import uuid
 import os
 import json
 from flask import request, current_app
+from flask import make_response
 from collections import deque
 
 MAX_HISTORY = 5
@@ -55,9 +56,11 @@ class ToolkitService:
         count = self.message_counter.get(user_id, 0)
         return count >= 3 and count % 3 == 0
 
-# Función para obtener o crear un ID único para el usuario
 def get_or_create_user_id():
     user_id = request.cookies.get("user_id")
     if not user_id:
         user_id = str(uuid.uuid4())
+        resp = make_response()
+        resp.set_cookie("user_id", user_id, max_age=24*60*60)  # Cookie por 1 día
+        return user_id
     return user_id

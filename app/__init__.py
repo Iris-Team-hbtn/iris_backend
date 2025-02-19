@@ -9,7 +9,12 @@ def create_app():
     api = Api(app, version='1.0', title='Iris API', description='Iris Application API')
     
     CORS(app)
-    app.config["vs"] = createVS()
+
+    try:
+        app.config["vs"] = createVS()
+    except Exception as e:
+        print(f"Error al cargar VectorStore: {e}")
+        app.config["vs"] = None  # Evitar que la app se caiga
 
     api.add_namespace(iris_ns, path='/iris')
 

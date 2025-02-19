@@ -16,8 +16,9 @@ class IrisAI:
             max_tokens=None,
             timeout=None,
             max_retries=2,
+            stream=True  # Streaming activado
         )
-        self.toolkit = ToolkitService()  # Instancia de ToolkitService
+        self.toolkit = ToolkitService()
 
     def call_iris(self, user_input, user_id):
         # Obtener historial de chat limitado
@@ -40,20 +41,17 @@ class IrisAI:
             print(summary_response)
             chat_history = [{"user": "Resumen", "assistant": summary_response.content}]
 
-        # Obtener vector store y resultados de búsqueda
         vs = self.toolkit.get_vs()
-        text = vs.search(user_input)
+        text = vs.search(user_input) or "No encontré información relevante en la base de datos."
+        print(text)
 
-        # Construir mensajes
-        system_message_content = system_prompt() + "\n" + text
+        system_message_content = system_prompt() + "\nFuente: protocolo2.pdf\n" + "\n" + text
         messages = [SystemMessage(content=system_message_content)]
 
-        # Añadir historial de chat
         for entry in chat_history:
             messages.append(HumanMessage(content=entry["user"]))
             messages.append(AIMessage(content=entry["assistant"]))
 
-        # Añadir mensaje actual
         messages.append(HumanMessage(content=user_input))
         # Generar respuesta
         response = self.llm.invoke(messages)
@@ -62,7 +60,4 @@ class IrisAI:
         chat_history.append({"user": user_input, "assistant": response.content})
         self.toolkit._save_chat_history(user_id, chat_history)
 
-        return response.content
-
-    def send_message(self, user_message, user_id):
-        return self.call_iris(user_message, user_id)
+        return response.content  # Devuelve el generador
