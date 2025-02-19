@@ -1,5 +1,5 @@
 from flask_restx import Namespace, Resource, fields
-from flask import request, Response
+from flask import request, Response, make_response, jsonify
 from app.services.gemini_service import IrisAI
 from app.services.calendar_service import CalendarService
 from app.services.toolkits import get_or_create_user_id
@@ -48,6 +48,7 @@ class Query(Resource):
         user_id = get_or_create_user_id()
         user_question = data["query"]
 
+        response = chatbot.call_iris(user_question, user_id=user_id)
         if not response:
             return {"error": "There is no information about this."}, 404
     
