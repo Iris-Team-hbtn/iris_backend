@@ -1,54 +1,87 @@
-import smtplib
 import os
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
+from email.message import EmailMessage
 from dotenv import load_dotenv
+import ssl
+import smtplib
 
 load_dotenv()
 
 class MailService:
     def __init__(self):
         """Carga la configuración del servidor SMTP desde variables de entorno."""
-        self.smtp_server = os.getenv("SMTP_SERVER")
-        self.smtp_port = int(os.getenv("SMTP_PORT", 587))
-        self.smtp_username = os.getenv("SMTP_USERNAME")  # Correo de la clínica
-        self.smtp_password = os.getenv("SMTP_PASSWORD")
-        self.clinic_email = os.getenv("CLINIC_EMAIL")  # Destinatario
+        self.username = os.getenv("SMTP_USERNAME")
+        self.password = os.getenv("SMTP_PASSWORD")
 
-    def send_email(self, user_email, user_question):
+    @staticmethod
+    def build_body(subject, obj={}):
+        body = ''
+        if subject == 'user_question':
+            body = f"""
+            Hola,
+
+            Un usuario ha solicitado asistencia humana. Aquí están los detalles:
+
+            Correo del usuario: {obj.get('user_email')}
+            Pregunta del usuario: {obj.get('user_question')}
+
+            Por favor, pónganse en contacto con el usuario para brindarle asistencia.
+
+            Atentamente,
+            Iris - Asistente Virtual
+            """
+        elif subject == 'clinic_appointment':
+            body = f"""
+            Hola,
+            
+            Un usuario ha sido agendado para una consulta médica
+            Correo del usuario: {obj.get('user_email')}
+            Fecha de la consulta: {obj.get('date')} 
+
+            Atentamente,
+            Iris - Asistente Virtual
+            """
+        elif subject == 'user_appointment':
+            body = f"""
+            Hola,
+            
+            Te has agendado con exito en Holberton Clinic, esperamos verte!
+            Fecha de la consulta: {obj.get('date')} 
+
+            Para cancelaciones por favor comunicarse a:
+            09x xxx xxx
+
+            Atentamente,
+            Iris - Asistente Virtual
+            """
+        return body
+
+    def send_email(self, subject, body, destination):
         """Envía un correo con la pregunta del usuario a la clínica."""
-        if not self.smtp_server or not self.smtp_username or not self.smtp_password:
+        if not self.username or not self.password:
             raise ValueError("Faltan configuraciones de SMTP en el entorno")
 
         # Configurar el correo
-        msg = MIMEMultipart()
-        msg["From"] = self.smtp_username
-        msg["To"] = self.clinic_email
-        msg["Subject"] = "Nueva consulta de un usuario"
+        self.em = EmailMessage()
+        self.em["From"] = self.username
+        self.em["To"] = destination
 
-        # Contenido del correo
-        body = f"""
-        Hola,
+        if subject == 'user_question':
+            self.em["Subject"] = "Nueva consulta de un usuario"
+        elif subject == 'clinic_appointment':
+            self.em["Subject"] = "Nueva consulta agendada"
+        elif subject == 'user_appointment':
+            self.em["Subject"] = "Consulta agendada con exito"
 
-        Un usuario ha solicitado asistencia humana. Aquí están los detalles:
+        self.em.set_content(body)
 
-        Correo del usuario: {user_email}
-        Pregunta del usuario: {user_question}
+        context = ssl.create_default_context()
 
-        Por favor, pónganse en contacto con el usuario para brindarle asistencia.
-
-        Atentamente,
-        Iris - Asistente Virtual
-        """
-        msg.attach(MIMEText(body, "plain"))
-
-        # Enviar el correo
         try:
-            with smtplib.SMTP(self.smtp_server, self.smtp_port) as server:
-                server.starttls()  # Asegura la conexión
-                server.login(self.smtp_username, self.smtp_password)
-                server.sendmail(self.smtp_username, self.clinic_email, msg.as_string())
-            return True
+            with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as smtp:
+                smtp.login(self.username, self.password)
+                smtp.sendmail(self.username, destination, self.em.as_string())
+            print("Correo enviado exitosamente.")
         except Exception as e:
-            print(f"Error enviando correo: {e}")
-            return False
+            print(f"Error al enviar el correo: {e}")
+
+

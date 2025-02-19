@@ -31,7 +31,6 @@ calendar_model = api.model('Calendar', {
 
 chatbot = IrisAI()
 calendar = CalendarService()
-mail_service = MailService()
 
 @api.route("/chat")
 class Query(Resource):
@@ -75,7 +74,6 @@ class Calendar(Resource):
 
     @api.expect(model)
     @api.response(200, 'Answer retrieved correctly')
-    @api.response(400, 'Invalid input data')
     @api.response(400, 'There is a problem with Google Calendar')
     def post(self):
         """Schedule an appointment to the clinic"""
@@ -92,6 +90,16 @@ class Calendar(Resource):
         event_create = calendar.createEvent(month=month, day=day, email=email, startTime=starttime, year=year)
 
         if event_create:
+            # Sending email to user
+            mail_service = MailService()
+
+            user_mail_body = mail_service.build_body('user_appointment', {"date": f"{day}/{month}/{year} - {starttime}hs"})
+            mail_service.send_email('user_appointment', user_mail_body, email)
+
+            # Sending email to clinic
+            clinic_mail_body = mail_service.build_body('clinic_appointment', {"user_email": email ,"date": f"{day}/{month}/{year} - {starttime}hs"})
+            mail_service.send_email('clinic_appointment', clinic_mail_body, "axel.palombo.ap@gmail.com")
+
             return {"message": "Event successfully created"}, 200
         
         return {"error": "There is a problem with Google Calendar"}, 400
