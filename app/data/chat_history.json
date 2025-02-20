@@ -1,30 +1,12 @@
 {
-    "02aafc31-fc35-45e0-b2e5-621340777794": [
+    "b0870837-c112-40cb-987c-3cceec7a6f27": [
         {
             "user": "Resumen",
-            "assistant": "Axel, con pérdida de cabello en mechones, principalmente en la parte superior de la cabeza, solicita ayuda para estimular el crecimiento.  La pérdida es mensual, de un solo mechón, sin síntomas adicionales como picazón o enrojecimiento.  La pérdida se ha notado durante 5 meses.  El asistente necesita información sobre cambios en el estilo de vida (dieta, estrés, medicamentos), antecedentes familiares de pérdida de cabello, y posibles productos para el cabello que puedan estar afectando el cuero cabelludo, para poder recomendar un curso de acción y/o ayudar a programar una cita con un dermatólogo o triólogo."
+            "assistant": "El usuario pregunta por el implante capilar con técnica FUE en Holberton Clinic.  La asistente describe el procedimiento, la extracción individual de folículos, y la recuperación (3-4 meses).  El usuario quiere más detalles sobre el costo, pero la asistente recomienda agendar una consulta para una evaluación personalizada y presupuesto."
         },
         {
-            "user": "No ha ocurrido nada extraño, si eso responde tus preguntas",
-            "assistant": "Entendido.  Sin más información, no puedo determinar la causa de la pérdida de cabello.  Para poder ayudarte, necesito más detalles sobre los síntomas, la duración de la pérdida, y si hay algún factor que pueda estar contribuyendo, como cambios en la dieta, el estrés, medicamentos o productos para el cabello.  ¿Qué más puedes contarme?"
-        }
-    ],
-    "e4d46ab6-d5ef-412d-8628-cd12bdb615a7": [
-        {
-            "user": "Hola Iris!",
-            "assistant": "Hola! Soy Iris, una asistente virtual dedicada a ayudar a liberar tus consultas sobre Holberton Clinic!"
-        },
-        {
-            "user": "Me gustaria informarme un poco sobre transplante capilar",
-            "assistant": "¡Claro!  Para informarte sobre el trasplante capilar, necesito saber un poco más sobre tus inquietudes específicas. ¿Qué te gustaría saber sobre este procedimiento?  Por ejemplo, ¿qué tipo de técnica te interesa?, ¿cuáles son tus preocupaciones?, ¿cuántas preguntas tienes en mente?"
-        },
-        {
-            "user": "Que tecnicas hay?",
-            "assistant": "En Holberton Clinic utilizamos dos técnicas principales para el trasplante capilar: la técnica FUE y la técnica DHI.  Ambas buscan la restauración del cabello en áreas afectadas por alopecia, pero difieren en el método.  ¿Te gustaría saber más sobre cada una?"
-        },
-        {
-            "user": "Si",
-            "assistant": "¡Por supuesto!\n\nLa **técnica FUE** (Follicular Unit Extraction) implica la extracción de folículos pilosos individuales de la zona donante (normalmente la parte posterior y superior del cuero cabelludo) utilizando pequeñas incisiones.  Cada folículo se extrae con un punch de precisión.  Posteriormente, se implantan estos folículos en la zona receptora.  Esta técnica es generalmente más rápida en la fase de extracción, pero la fase de implantación puede ser más compleja.\n\nLa **técnica DHI** (Direct Hair Implantation) implica la inserción directa de los folículos pilosos en la zona receptora utilizando una herramienta de implantación.  Esta técnica permite una mayor preservación de los folículos y una mayor precisión en la implantación.  La fase de extracción suele ser más cuidadosa y lenta que en la técnica FUE, pero la implantación es más precisa y rápida.\n\n¿Te gustaría saber más sobre alguna de las dos, o quizás sobre el proceso general del trasplante capilar?"
+            "user": "Si por favor?",
+            "assistant": "Por supuesto.  ¿Qué te gustaría saber sobre el implante capilar con la técnica FUE en Holberton Clinic?"
         }
     ]
 }

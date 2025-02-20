@@ -36,28 +36,35 @@ class IrisAI:
             history_text = "\n".join(
                 [f"Usuario: {e['user']}\nAsistente: {e['assistant']}" for e in chat_history]
             )
-            print(f"history text es: {history_text}")
             summary_response = self.llm.invoke([SystemMessage(content=summary_prompt), HumanMessage(content=history_text)])
-            print(summary_response)
             chat_history = [{"user": "Resumen", "assistant": summary_response.content}]
 
         vs = self.toolkit.get_vs()
-        text = vs.search(user_input) or "No encontré información relevante en la base de datos."
-        print(text)
+        text = vs.search(user_input)
 
-        system_message_content = system_prompt() + "\nFuente: protocolo2.pdf\n" + "\n" + text
+        # Si FAISS encuentra información relevante, la usamos como contexto
+        if text:
+            system_message_content = (
+                system_prompt()
+                + "\nUtiliza la siguiente información como referencia para responder al usuario, pero NO la copies literalmente:\n"
+                + text
+            )
+        else:
+            system_message_content = system_prompt()
+
         messages = [SystemMessage(content=system_message_content)]
-
+        
         for entry in chat_history:
             messages.append(HumanMessage(content=entry["user"]))
             messages.append(AIMessage(content=entry["assistant"]))
 
         messages.append(HumanMessage(content=user_input))
-        # Generar respuesta
+
+        # Generar respuesta con Gemini
         response = self.llm.invoke(messages)
 
         # Guardar en historial
         chat_history.append({"user": user_input, "assistant": response.content})
         self.toolkit._save_chat_history(user_id, chat_history)
 
-        return response.content  # Devuelve el generador
+        return response.content
