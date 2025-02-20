@@ -4,11 +4,13 @@ from flask_cors import CORS
 from app.models.model import createVS
 from app.api.v1.iris import api as iris_ns
 
+cors = CORS(resources={r"/*": {"origins": "*"}}, supports_credentials=True)
+
 def create_app():
     app = Flask(__name__)
     api = Api(app, version='1.0', title='Iris API', description='Iris Application API')
     
-    CORS(app)
+    cors.init_app(app)
 
     try:
         app.config["vs"] = createVS()
