@@ -4,6 +4,7 @@ import os
 from dotenv import load_dotenv
 from app.data.prompts import system_prompt
 from app.services.toolkits import ToolkitService
+from app.services.mail_service import MailService  # Importamos MailService
 
 class IrisAI:
 
@@ -12,17 +13,18 @@ class IrisAI:
         self._google_api_key = os.getenv("GOOGLE_API_KEY", "")
         self.llm = ChatGoogleGenerativeAI(
             model="gemini-1.5-flash-8b",
-            temperature=0.7,
+            temperature=0.5,
             max_tokens=None,
             timeout=None,
             max_retries=2,
-            stream=True  # Streaming activado
+            # stream=True  # Si quieres agregar Streaming descomenta esta linea
         )
         self.toolkit = ToolkitService()
+        self.mail_service = MailService()  # Instanciamos MailService
 
-    def call_iris(self, user_input, user_id):
-        """Genera una respuesta estructurada y legible para el usuario."""
-        
+    def call_iris(self, user_input, user_id, user_email=None):
+        """Genera una respuesta estructurada y, si es necesario, envía un correo con más información."""
+
         # Obtener historial de chat
         chat_history = self.toolkit._load_chat_history(user_id)
 
@@ -73,5 +75,11 @@ class IrisAI:
         # Guardar en historial
         chat_history.append({"user": user_input, "assistant": response.content})
         self.toolkit._save_chat_history(user_id, chat_history)
+
+        # Si la respuesta menciona "más información" y hay un correo, enviamos un email
+        if ("más información" or "contactar humano") in response.content.lower() and user_email:
+            subject = "Más información sobre tu consulta"
+            email_body = f"Hola, aquí tienes más detalles sobre tu consulta:\n\n{response.content}"
+            self.mail_service.send_email("info_request",subject, email_body, user_email)
 
         return response.content  # Respuesta en formato legible

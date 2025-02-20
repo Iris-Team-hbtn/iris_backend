@@ -2,23 +2,15 @@
     "b0870837-c112-40cb-987c-3cceec7a6f27": [
         {
             "user": "Resumen",
-            "assistant": "El usuario Alexis consulta sobre la pérdida de cabello (alopecia) que experimenta desde hace 2 años.  La asistente recomienda una consulta con un especialista en tricología para determinar la causa y un plan de tratamiento personalizado, ya que la pérdida de cabello puede tener diversas causas (hormonales, estrés, nutricionales, enfermedades, medicamentos).  El usuario previamente había consultado sobre un implante capilar FUE en Holberton Clinic, pero la asistente le recomendó una consulta para obtener un presupuesto personalizado."
+            "assistant": "Alexis solicita información sobre la técnica capilar DHI a Iris, su asistente virtual.  Iris explica que DHI es una técnica quirúrgica de implante capilar directa, más precisa que FUE, con duración de 6 a 9 horas y efectos visibles a partir de los 3-4 meses."
         },
         {
-            "user": "Que es la tecnica FUE?",
-            "assistant": "La técnica FUE (Follicular Unit Extraction) es una técnica quirúrgica para el implante capilar.  Consiste en la extracción de unidades foliculares (grupos de folículos pilosos) de una zona donante del cuero cabelludo (generalmente la parte posterior y lateral de la cabeza), donde el cabello suele ser más abundante y resistente a la pérdida.  Estas unidades foliculares se extraen con precisión y se trasplantan a la zona receptora, donde hay pérdida de cabello.  El procedimiento es indoloro y su efecto es notable a partir de los 3 a 4 meses.  La duración aproximada del procedimiento es de 6 a 9 horas.  Para obtener más información, te recomiendo que ingreses tu correo electrónico para que un profesional de la clínica pueda contactarte."
+            "user": "quiero mas informacion?",
+            "assistant": "Para obtener más información sobre los tratamientos capilares, por favor, proporciona tu correo electrónico. Un profesional humano se pondrá en contacto contigo para responder a tus preguntas."
         },
         {
-            "user": "Quisiera saber que es la tecnica DHI y el costo aproximado?",
-            "assistant": "La técnica DHI (Direct Hair Implantation) es otra técnica quirúrgica para el implante capilar.  En DHI, las unidades foliculares se extraen y se colocan directamente en los folículos del cuero cabelludo receptor.  Esta técnica permite una mayor densidad de implantación y una mayor precisión en la colocación de los folículos.  Su duración aproximada también es de 6 a 9 horas.  El costo aproximado de la técnica DHI varía entre 3900 USD a 4500 USD, dependiendo de la extensión del área a tratar y otros factores.  Para obtener un presupuesto personalizado y más información, te recomiendo que ingreses tu correo electrónico para que un profesional de la clínica pueda contactarte."
-        },
-        {
-            "user": "Quisiera saber que es la tecnica DHI y el costo aproximado?",
-            "assistant": "La técnica DHI (Direct Hair Implantation) es una técnica quirúrgica para el implante capilar que implica la extracción y colocación directa de unidades foliculares en los folículos del cuero cabelludo receptor.  Esto permite una mayor densidad de implantación y una mayor precisión en la colocación de los folículos.  El tiempo estimado de duración del procedimiento es de 6 a 9 horas.  El costo aproximado de la técnica DHI varía entre 3900 USD y 4500 USD, dependiendo de la extensión del área a tratar y otros factores.  Para obtener un presupuesto personalizado y más detalles, te recomiendo que ingreses tu correo electrónico para que un profesional de la clínica pueda contactarte."
-        },
-        {
-            "user": "Que es la alopecia?",
-            "assistant": "La alopecia es la pérdida parcial o total del cabello.  Puede tener diferentes causas, incluyendo factores hormonales, estrés, problemas nutricionales, enfermedades, o medicamentos.  Para determinar la causa específica de la alopecia y el tratamiento adecuado, se recomienda consultar con un profesional de la salud.  Si deseas más información, por favor, proporciona tu correo electrónico para que un profesional pueda contactarte."
+            "user": "quiero mas informacionok, mi correo electronico es alexisoblivion@gmail.com?",
+            "assistant": "Gracias, Alexis.  Un profesional de la clínica se pondrá en contacto contigo a la brevedad a través de tu correo electrónico para proporcionarte más información."
         }
     ]
 }
