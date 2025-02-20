@@ -21,50 +21,57 @@ class IrisAI:
         self.toolkit = ToolkitService()
 
     def call_iris(self, user_input, user_id):
-        # Obtener historial de chat limitado
+        """Genera una respuesta estructurada y legible para el usuario."""
+        
+        # Obtener historial de chat
         chat_history = self.toolkit._load_chat_history(user_id)
 
         if not chat_history:
             welcome_message = {
                 "user": "Hola Iris!",
-                "assistant": "Hola! Soy Iris, una asistente virtual dedicada a ayudar a liberar tus consultas sobre Holberton Clinic!"
+                "assistant": "¡Hola! Soy Iris, tu asistente virtual. ¿En qué puedo ayudarte hoy?"
             }
             chat_history.append(welcome_message)
 
+        # Resumen del historial si es necesario
         if self.toolkit.should_summarize(user_id):
-            summary_prompt = "Resume brevemente el siguiente historial de conversación, guardando información clave:"
-            history_text = "\n".join(
+            summary_prompt = "Resume brevemente el siguiente historial de conversación, manteniendo los puntos clave:"
+            history_text = "\n\n".join(
                 [f"Usuario: {e['user']}\nAsistente: {e['assistant']}" for e in chat_history]
             )
-            summary_response = self.llm.invoke([SystemMessage(content=summary_prompt), HumanMessage(content=history_text)])
+            summary_response = self.llm.invoke([
+                SystemMessage(content=summary_prompt),
+                HumanMessage(content=history_text)
+            ])
             chat_history = [{"user": "Resumen", "assistant": summary_response.content}]
 
+        # Obtener información relevante desde FAISS
         vs = self.toolkit.get_vs()
         text = vs.search(user_input)
 
-        # Si FAISS encuentra información relevante, la usamos como contexto
+        # Asegurar formato legible de la información recuperada
         if text:
-            system_message_content = (
-                system_prompt()
-                + "\nUtiliza la siguiente información como referencia para responder al usuario, pero NO la copies literalmente:\n"
-                + text
-            )
+            formatted_text = "\n\n🔹 Información relacionada:\n" + text.replace(".", ".\n")
         else:
-            system_message_content = system_prompt()
+            formatted_text = "No encontré información relevante en la base de datos."
 
+        # Mensaje del sistema con contexto
+        system_message_content = f"{system_prompt()}\n\nFuente: protocolo2.pdf\n{formatted_text}"
+
+        # Construcción del mensaje para la IA
         messages = [SystemMessage(content=system_message_content)]
-        
+
         for entry in chat_history:
             messages.append(HumanMessage(content=entry["user"]))
             messages.append(AIMessage(content=entry["assistant"]))
 
         messages.append(HumanMessage(content=user_input))
 
-        # Generar respuesta con Gemini
+        # Generar respuesta
         response = self.llm.invoke(messages)
 
         # Guardar en historial
         chat_history.append({"user": user_input, "assistant": response.content})
         self.toolkit._save_chat_history(user_id, chat_history)
 
-        return response.content
+        return response.content  # Respuesta en formato legible
