@@ -33,7 +33,7 @@ class MailService:
             body = f"""
             Hola,
             
-            Un usuario ha sido agendado para una consulta médica
+            Un usuario ha sido agendado para una consulta médica.
             Correo del usuario: {obj.get('user_email')}
             Fecha de la consulta: {obj.get('date')} 
 
@@ -44,11 +44,24 @@ class MailService:
             body = f"""
             Hola,
             
-            Te has agendado con exito en Holberton Clinic, esperamos verte!
+            Te has agendado con éxito en Holberton Clinic, esperamos verte!
             Fecha de la consulta: {obj.get('date')} 
 
-            Para cancelaciones por favor comunicarse a:
+            Para cancelaciones, por favor comunícate a:
             09x xxx xxx
+
+            Atentamente,
+            Iris - Asistente Virtual
+            """
+        elif subject == 'contact_request':
+            body = f"""
+            Hola,
+
+            El usuario ha solicitado que un profesional se ponga en contacto.
+            Correo del usuario: {obj.get('user_email')}
+            Consulta pendiente: {obj.get('user_question')}
+
+            Por favor, pónganse en contacto a la brevedad.
 
             Atentamente,
             Iris - Asistente Virtual
@@ -56,11 +69,10 @@ class MailService:
         return body
 
     def send_email(self, subject, body, destination):
-        """Envía un correo con la pregunta del usuario a la clínica."""
+        """Envía un correo utilizando la configuración SMTP."""
         if not self.username or not self.password:
             raise ValueError("Faltan configuraciones de SMTP en el entorno")
 
-        # Configurar el correo
         self.em = EmailMessage()
         self.em["From"] = self.username
         self.em["To"] = destination
@@ -70,7 +82,9 @@ class MailService:
         elif subject == 'clinic_appointment':
             self.em["Subject"] = "Nueva consulta agendada"
         elif subject == 'user_appointment':
-            self.em["Subject"] = "Consulta agendada con exito"
+            self.em["Subject"] = "Consulta agendada con éxito"
+        elif subject == 'contact_request':
+            self.em["Subject"] = "Solicitud de contacto - Consulta pendiente"
 
         self.em.set_content(body)
 
@@ -83,5 +97,3 @@ class MailService:
             print("Correo enviado exitosamente.")
         except Exception as e:
             print(f"Error al enviar el correo: {e}")
-
-

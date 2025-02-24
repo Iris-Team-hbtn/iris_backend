@@ -12,5 +12,19 @@
             "user": "quiero mas informacionok, mi correo electronico es alexisoblivion@gmail.com?",
             "assistant": "Gracias, Alexis.  Un profesional de la clínica se pondrá en contacto contigo a la brevedad a través de tu correo electrónico para proporcionarte más información."
         }
+    ],
+    "70c7e377-0248-436c-b986-e1c41aad0659": [
+        {
+            "user": "Resumen",
+            "assistant": "Alexis busca información sobre la pérdida de cabello.  Iris, su asistente virtual, le recomienda una evaluación médica presencial para un diagnóstico preciso y tratamiento adecuado.  Para obtener más información, Iris necesita el correo electrónico de Alexis para contactar a un profesional de la salud capilar y programar una consulta."
+        },
+        {
+            "user": "alexisoblivion@gmail.com",
+            "assistant": "Perfecto.  Alexisoblivion@gmail.com.  Un profesional de la salud capilar se pondrá en contacto contigo para programar una consulta y brindarte más información sobre las opciones de tratamiento para la pérdida de cabello.  ¿Hay algo más que pueda ayudarte hoy?"
+        },
+        {
+            "user": "QUiero saber de alopecia areata",
+            "assistant": "La alopecia areata es una condición que causa la pérdida repentina de cabello en parches.  Es importante que un profesional médico te evalúe para determinar la causa y el mejor plan de tratamiento.  Para obtener más información y programar una consulta, por favor proporciona tu correo electrónico."
+        }
     ]
 }

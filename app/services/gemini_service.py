@@ -1,3 +1,4 @@
+import re
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 import os
@@ -17,13 +18,13 @@ class IrisAI:
             max_tokens=None,
             timeout=None,
             max_retries=2,
-            # stream=True  # Si quieres agregar Streaming descomenta esta linea
+            # stream=True  # Si quieres agregar Streaming descomenta esta línea
         )
         self.toolkit = ToolkitService()
         self.mail_service = MailService()  # Instanciamos MailService
 
     def call_iris(self, user_input, user_id, user_email=None):
-        """Genera una respuesta estructurada y, si es necesario, envía un correo con más información."""
+        """Genera una respuesta estructurada y, si es necesario, envía un correo a soporte."""
 
         # Obtener historial de chat
         chat_history = self.toolkit._load_chat_history(user_id)
@@ -51,22 +52,22 @@ class IrisAI:
         vs = self.toolkit.get_vs()
         text = vs.search(user_input)
 
-        # Asegurar formato legible de la información recuperada
         if text:
             formatted_text = "\n\n🔹 Información relacionada:\n" + text.replace(".", ".\n")
         else:
-            formatted_text = "No encontré información relevante en la base de datos."
+            formatted_text = (
+                "No encontré información relevante en la base de datos. "
+                "¿Deseas que un profesional se ponga en contacto contigo para brindarte más detalles? "
+                "Si es así, por favor proporciona tu correo electrónico."
+            )
 
         # Mensaje del sistema con contexto
         system_message_content = f"{system_prompt()}\n\nFuente: protocolo2.pdf\n{formatted_text}"
 
-        # Construcción del mensaje para la IA
         messages = [SystemMessage(content=system_message_content)]
-
         for entry in chat_history:
             messages.append(HumanMessage(content=entry["user"]))
             messages.append(AIMessage(content=entry["assistant"]))
-
         messages.append(HumanMessage(content=user_input))
 
         # Generar respuesta
@@ -76,10 +77,25 @@ class IrisAI:
         chat_history.append({"user": user_input, "assistant": response.content})
         self.toolkit._save_chat_history(user_id, chat_history)
 
-        # Si la respuesta menciona "más información" y hay un correo, enviamos un email
-        if ("más información" or "contactar humano") in response.content.lower() and user_email:
-            subject = "Más información sobre tu consulta"
-            email_body = f"Hola, aquí tienes más detalles sobre tu consulta:\n\n{response.content}"
-            self.mail_service.send_email("info_request",subject, email_body, user_email)
+        # Si se detecta un correo en el input, asumimos confirmación de contacto.
+        email_pattern = r"[^@]+@[^@]+\.[^@]+"
+        if re.fullmatch(email_pattern, user_input.strip()):
+            # Buscar la consulta pendiente en el historial (último mensaje que no es un correo)
+            pending_query = ""
+            for entry in reversed(chat_history[:-1]):
+                if not re.fullmatch(email_pattern, entry["user"].strip()):
+                    pending_query = entry["user"]
+                    break
+            # Construir y enviar el correo utilizando MailService
+            email_body = self.mail_service.build_body(
+                'contact_request',
+                {"user_email": user_input, "user_question": pending_query}
+            )
+            # Envío a la dirección de soporte (modifícala según convenga)
+            self.mail_service.send_email('contact_request', email_body, "soporte@clinica.com")
+            confirmation_message = (
+                "Gracias. Hemos enviado tu consulta a un profesional, quien se pondrá en contacto contigo a la brevedad."
+            )
+            return confirmation_message
 
-        return response.content  # Respuesta en formato legible
+        return response.content
