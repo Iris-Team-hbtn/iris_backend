@@ -17,7 +17,7 @@ class MailService:
         body = ''
         if subject == 'user_question':
             body = f"""
-            Hola,
+            Hola {obj.get('fullname')},
 
             Un usuario ha solicitado asistencia humana. Aquí están los detalles:
 
@@ -31,7 +31,7 @@ class MailService:
             """
         elif subject == 'clinic_appointment':
             body = f"""
-            Hola,
+            Hola!
             
             Un usuario ha sido agendado para una consulta médica
             Correo del usuario: {obj.get('user_email')}
@@ -42,7 +42,7 @@ class MailService:
             """
         elif subject == 'user_appointment':
             body = f"""
-            Hola,
+            Hola {obj.get('fullname')},
             
             Te has agendado con exito en Holberton Clinic, esperamos verte!
             Fecha de la consulta: {obj.get('date')} 

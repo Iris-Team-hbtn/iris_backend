@@ -76,7 +76,7 @@ class CalendarService:
             "summary": "Consulta Holberton Clinic",
             "location": "Holberton", 
             "description": "Holberton Clinic consultation service at display",
-            "colorId": 6,
+            "colorId": 3,
             "start": {
                 "dateTime": start_datetime,
                 "timeZone": "America/Montevideo"
@@ -86,7 +86,7 @@ class CalendarService:
                 "timeZone": "America/Montevideo"
             },
             "attendees": [
-                {"email": "axel.palombo.ap@gmail.com"},
+                {"email": "yuntxwillover@gmail.com"},
                 {"email": email}
             ]
         }

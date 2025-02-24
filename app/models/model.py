@@ -18,6 +18,6 @@ def createVS():
   firebase = pyrebase.initialize_app(firebaseConfig)
   storage = firebase.storage()
 
-  storage.child("protocolo2.pdf").download(filename="protocolo2.pdf", path="./")
+  storage.child("protocoloIris.pdf").download(filename="protocoloIris.pdf", path="./")
 
-  return vectorstore('./protocolo2.pdf')
+  return vectorstore('./protocoloIris.pdf')

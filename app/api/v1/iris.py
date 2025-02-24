@@ -1,24 +1,15 @@
 from flask_restx import Namespace, Resource, fields
-from flask import request, Response, make_response, jsonify
-from app.services.gemini_service import IrisAI
+from flask import make_response, jsonify
 from app.services.calendar_service import CalendarService
 from app.services.toolkits import get_or_create_user_id
 from app.services.mail_service import MailService
-
+from app.services.main_service import MainCaller
 
 api = Namespace('iris', description='iris endpoints')
 
 model = api.model('Iris', {
     'query': fields.String(required=True, description='Pregunta para Iris'),
 },)
-
-email_model = api.model(
-    'EmailRequest',
-    {
-        'email': fields.String(required=True, description='Correo del usuario'),
-        'question': fields.String(required=True, description='Pregunta del usuario'),
-    },
-)
 
 calendar_model = api.model('Calendar', {
     'fullname': fields.String(required=True, description='Fullname of client'),
@@ -29,8 +20,8 @@ calendar_model = api.model('Calendar', {
     'year': fields.Integer(required=False, description='Year of the appointment')
 })
 
-chatbot = IrisAI()
 calendar = CalendarService()
+main_caller = MainCaller()
 
 @api.route("/chat")
 class Query(Resource):
@@ -47,14 +38,14 @@ class Query(Resource):
         user_id = get_or_create_user_id()
         user_question = data["query"]
 
-        response = chatbot.call_iris(user_question, user_id=user_id)
+        response = main_caller.call(user_question, user_id=user_id)
         if not response:
             return {"error": "There is no information about this."}, 404
     
         #Configuramos la respuesta en cookie
         resp = {"response": response}
         response = make_response(jsonify(resp), 200)
-        response.set_cookie('user_id', user_id, max_age=24*60*60, path='/', httponly=True, secure=False, domain="localhost")  # cookie solo por 1 dia
+        response.set_cookie('user_id', user_id, max_age=30*24*60*60, path='/', httponly=True, secure=False, domain="localhost")  # cookie solo por 1 dia
         print(response)
         return response
 
@@ -82,6 +73,7 @@ class Calendar(Resource):
         if not data:
             return {"error": "Invalid input data"}, 400
         
+        fullname = data.get('fullname')
         month = data.get('month')
         day = data.get('day')
         email = data.get('email')
@@ -93,12 +85,12 @@ class Calendar(Resource):
             # Sending email to user
             mail_service = MailService()
 
-            user_mail_body = mail_service.build_body('user_appointment', {"date": f"{day}/{month}/{year} - {starttime}hs"})
+            user_mail_body = mail_service.build_body('user_appointment', {"fullname": fullname, "date": f"{day}/{month}/{year} - {starttime}hs"})
             mail_service.send_email('user_appointment', user_mail_body, email)
 
             # Sending email to clinic
-            clinic_mail_body = mail_service.build_body('clinic_appointment', {"user_email": email ,"date": f"{day}/{month}/{year} - {starttime}hs"})
-            mail_service.send_email('clinic_appointment', clinic_mail_body, "axel.palombo.ap@gmail.com")
+            clinic_mail_body = mail_service.build_body('clinic_appointment', {"fullname": fullname, "user_email": email ,"date": f"{day}/{month}/{year} - {starttime}hs"})
+            mail_service.send_email('clinic_appointment', clinic_mail_body, "yuntxwillover@gmail.com")
 
             return {"message": "Event successfully created"}, 200
         
