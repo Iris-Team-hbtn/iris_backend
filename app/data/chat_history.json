@@ -1,208 +1,32 @@
 {
-    "02aafc31-fc35-45e0-b2e5-621340777794": [
-        {
-            "user": "Resumen",
-            "assistant": "Axel, con pérdida de cabello en mechones, principalmente en la parte superior de la cabeza, solicita ayuda para estimular el crecimiento.  La pérdida es mensual, de un solo mechón, sin síntomas adicionales como picazón o enrojecimiento.  La pérdida se ha notado durante 5 meses.  El asistente necesita información sobre cambios en el estilo de vida (dieta, estrés, medicamentos), antecedentes familiares de pérdida de cabello, y posibles productos para el cabello que puedan estar afectando el cuero cabelludo, para poder recomendar un curso de acción y/o ayudar a programar una cita con un dermatólogo o triólogo."
-        },
-        {
-            "user": "No ha ocurrido nada extraño, si eso responde tus preguntas",
-            "assistant": "Entendido.  Sin más información, no puedo determinar la causa de la pérdida de cabello.  Para poder ayudarte, necesito más detalles sobre los síntomas, la duración de la pérdida, y si hay algún factor que pueda estar contribuyendo, como cambios en la dieta, el estrés, medicamentos o productos para el cabello.  ¿Qué más puedes contarme?"
-        }
-    ],
-    "e4d46ab6-d5ef-412d-8628-cd12bdb615a7": [
+    "70c7e377-0248-436c-b986-e1c41aad0659": [
         {
             "user": "Hola Iris!",
             "assistant": "Hola! Soy Iris, una asistente virtual dedicada a ayudar a liberar tus consultas sobre Holberton Clinic!"
         },
         {
-            "user": "Me gustaria informarme un poco sobre transplante capilar",
-            "assistant": "¡Claro!  Para informarte sobre el trasplante capilar, necesito saber un poco más sobre tus inquietudes específicas. ¿Qué te gustaría saber sobre este procedimiento?  Por ejemplo, ¿qué tipo de técnica te interesa?, ¿cuáles son tus preocupaciones?, ¿cuántas preguntas tienes en mente?"
+            "user": "Hola me llamo Alexis",
+            "assistant": "Hola Alexis, ¿en qué puedo ayudarte hoy?"
         },
         {
-            "user": "Que tecnicas hay?",
-            "assistant": "En Holberton Clinic utilizamos dos técnicas principales para el trasplante capilar: la técnica FUE y la técnica DHI.  Ambas buscan la restauración del cabello en áreas afectadas por alopecia, pero difieren en el método.  ¿Te gustaría saber más sobre cada una?"
+            "user": "Quisiera saber que es la alopecia",
+            "assistant": "La alopecia es la pérdida del cabello. Existen diferentes tipos de alopecia, como la alopecia areata, la alopecia totalis y la alopecia androgénica (también conocida como calvicie de patrón masculino o femenino).  Cada tipo tiene características específicas.  ¿Te gustaría saber más sobre alguno en particular o necesitas más información general?"
         },
         {
-            "user": "Si",
-            "assistant": "¡Por supuesto!\n\nLa **técnica FUE** (Follicular Unit Extraction) implica la extracción de folículos pilosos individuales de la zona donante (normalmente la parte posterior y superior del cuero cabelludo) utilizando pequeñas incisiones.  Cada folículo se extrae con un punch de precisión.  Posteriormente, se implantan estos folículos en la zona receptora.  Esta técnica es generalmente más rápida en la fase de extracción, pero la fase de implantación puede ser más compleja.\n\nLa **técnica DHI** (Direct Hair Implantation) implica la inserción directa de los folículos pilosos en la zona receptora utilizando una herramienta de implantación.  Esta técnica permite una mayor preservación de los folículos y una mayor precisión en la implantación.  La fase de extracción suele ser más cuidadosa y lenta que en la técnica FUE, pero la implantación es más precisa y rápida.\n\n¿Te gustaría saber más sobre alguna de las dos, o quizás sobre el proceso general del trasplante capilar?"
-        }
-    ],
-    "ea440f42-b563-4b88-9a8f-f6371dcf0093": [
-        {
-            "user": "Hola Iris!",
-            "assistant": "Hola! Soy Iris, una asistente virtual dedicada a ayudar a liberar tus consultas sobre Holberton Clinic!"
+            "user": "Necesito mas informacion",
+            "assistant": "La alopecia, en general, implica la pérdida de cabello en una o más áreas del cuero cabelludo.  Existen diferentes tipos, cada uno con sus propias causas y características.  Para comprender mejor tu situación, ¿podrías describir qué tipo de pérdida de cabello te preocupa o qué te gustaría saber más?  Por ejemplo, ¿estás experimentando una pérdida generalizada, o en una zona específica?  ¿Has notado algún otro síntoma?"
         },
         {
-            "user": "hola",
-            "assistant": "Hola! ¿En qué puedo ayudarte hoy?"
-        }
-    ],
-    "5ccf2933-296c-4f10-a604-2eafef780c9c": [
-        {
-            "user": "Hola Iris!",
-            "assistant": "Hola! Soy Iris, una asistente virtual dedicada a ayudar a liberar tus consultas sobre Holberton Clinic!"
+            "user": "Necesito mas informaciones generalizada",
+            "assistant": "La alopecia, en general, es la pérdida del cabello.  Puede ser causada por una variedad de factores, incluyendo factores genéticos, hormonales, estrés, enfermedades, tratamientos médicos, y ciertos hábitos.  La pérdida de cabello puede variar en intensidad y extensión, desde una pequeña zona de pérdida hasta la pérdida completa del cabello en todo el cuero cabelludo.\n\nExisten diferentes tipos de alopecia, cada uno con sus propias características.  Algunos ejemplos comunes son:\n\n* **Alopecia androgénica (calvicie de patrón masculino o femenino):**  Es el tipo más común de pérdida de cabello, generalmente causada por una combinación de factores genéticos y hormonales.  Se caracteriza por una pérdida de cabello progresiva, a menudo en la zona frontal y superior del cuero cabelludo.\n\n* **Alopecia areata:** Es una enfermedad autoinmune que causa la pérdida de cabello en parches circulares o irregulares.  La causa exacta es desconocida, pero se cree que está relacionada con el sistema inmunitario del cuerpo atacando el folículo piloso.\n\n* **Alopecia difusa:** Se caracteriza por una pérdida de cabello generalizada en todo el cuero cabelludo.  Puede ser causada por una variedad de factores, como estrés, deficiencias nutricionales, enfermedades o ciertos tratamientos médicos.\n\n* **Traumatismos:** La pérdida del cabello puede estar asociada a traumas en el cuero cabelludo.\n\n* **Enfermedades:** Algunas enfermedades pueden causar pérdida de cabello como una parte de los síntomas.\n\n\nSi estás experimentando pérdida de cabello, es importante consultar con un especialista para determinar la causa específica y el mejor curso de acción.  ¿Te gustaría saber más sobre algún tipo de alopecia en particular, o necesitas información sobre la evaluación de este tipo de problema?"
         },
         {
-            "user": "Hola Iris!",
-            "assistant": "Hola! ¿En qué puedo ayudarte hoy?"
-        }
-    ],
-    "4ea98ad5-85e8-422f-83b6-899eb45d128f": [
-        {
-            "user": "Hola Iris!",
-            "assistant": "Hola! Soy Iris, una asistente virtual dedicada a ayudar a liberar tus consultas sobre Holberton Clinic!"
+            "user": "si, necesito informacion sobre la evaluacion",
+            "assistant": "La evaluación de la alopecia depende del tipo de pérdida de cabello que se sospecha.  En general, la evaluación implica una serie de pasos para identificar la causa subyacente y determinar el mejor plan de tratamiento.  Estos pasos pueden incluir:\n\n* **Historia clínica:** El médico te preguntará sobre tus antecedentes médicos, incluyendo cualquier historial familiar de pérdida de cabello, enfermedades, tratamientos médicos recientes, cambios en tu estilo de vida o hábitos, y cualquier otro síntoma que estés experimentando.\n\n* **Examen físico:**  El médico examinará tu cuero cabelludo y el cabello para identificar cualquier patrón de pérdida, áreas afectadas, cicatrices, erupciones o cambios en la textura del cabello.\n\n* **Análisis de laboratorio:** En algunos casos, se pueden realizar análisis de sangre para descartar posibles deficiencias nutricionales, problemas hormonales u otras enfermedades que puedan estar contribuyendo a la pérdida de cabello.  Estos análisis pueden incluir análisis de tiroides, hierro, vitamina D, entre otros.\n\n* **Biopsia del cuero cabelludo (en algunos casos):** Si es necesario, se puede realizar una biopsia del cuero cabelludo para examinar el folículo piloso y obtener información más detallada sobre el estado de la salud del cuero cabelludo.\n\n* **Evaluación dermatológica (en algunos casos):** Un dermatólogo puede realizar pruebas adicionales para determinar el tipo de alopecia y descartar otras afecciones de la piel que puedan estar causando la pérdida de cabello.\n\nEs importante recordar que la evaluación de la alopecia es un proceso individualizado.  El médico adaptará la evaluación a tus circunstancias específicas para determinar la causa subyacente de tu pérdida de cabello y recomendar el mejor tratamiento.  ¿Te gustaría saber más sobre algún aspecto específico de la evaluación, como las pruebas de laboratorio o la biopsia del cuero cabelludo?"
         },
         {
-            "user": "Me gustaria que me ayudes",
-            "assistant": "Dime en qué te puedo ayudar."
-        }
-    ],
-    "63b38840-f3a4-496c-bafc-db7e118830dc": [
-        {
-            "user": "Hola Iris!",
-            "assistant": "Hola! Soy Iris, una asistente virtual dedicada a ayudar a liberar tus consultas sobre Holberton Clinic!"
-        },
-        {
-            "user": "Con implantes capilares",
-            "assistant": "¿En qué puedo ayudarte con respecto a los implantes capilares?"
-        }
-    ],
-    "6aa69b8b-eae5-4932-a380-a2ce9b774c3f": [
-        {
-            "user": "Hola Iris!",
-            "assistant": "Hola! Soy Iris, una asistente virtual dedicada a ayudar a liberar tus consultas sobre Holberton Clinic!"
-        },
-        {
-            "user": "que son",
-            "assistant": "¿Qué deseas saber sobre Holberton Clinic?  Por favor, especifica tu pregunta."
-        }
-    ],
-    "0903428d-40be-4c55-b1ee-f74fb25fecb7": [
-        {
-            "user": "Hola Iris!",
-            "assistant": "Hola! Soy Iris, una asistente virtual dedicada a ayudar a liberar tus consultas sobre Holberton Clinic!"
-        },
-        {
-            "user": "Hola iris",
-            "assistant": "Hola! ¿En qué puedo ayudarte hoy?"
-        }
-    ],
-    "43e78dcf-1f13-40ff-8ac6-f3d304d15e5c": [
-        {
-            "user": "Hola Iris!",
-            "assistant": "Hola! Soy Iris, una asistente virtual dedicada a ayudar a liberar tus consultas sobre Holberton Clinic!"
-        },
-        {
-            "user": "hola iris",
-            "assistant": "Hola! ¿En qué puedo ayudarte hoy?"
-        }
-    ],
-    "f9e2bcdf-efd6-4de3-ad41-99e4f4afdb75": [
-        {
-            "user": "Hola Iris!",
-            "assistant": "Hola! Soy Iris, una asistente virtual dedicada a ayudar a liberar tus consultas sobre Holberton Clinic!"
-        },
-        {
-            "user": "hola iris",
-            "assistant": "Hola! ¿En qué puedo ayudarte hoy?"
-        }
-    ],
-    "0d97dcea-31cd-4233-bf8e-c94a92f05f0e": [
-        {
-            "user": "Hola Iris!",
-            "assistant": "Hola! Soy Iris, una asistente virtual dedicada a ayudar a liberar tus consultas sobre Holberton Clinic!"
-        },
-        {
-            "user": "hola iris",
-            "assistant": "Hola! ¿En qué puedo ayudarte hoy?"
-        }
-    ],
-    "c3722029-7826-483f-9dff-a08f4f22b1c1": [
-        {
-            "user": "Hola Iris!",
-            "assistant": "Hola! Soy Iris, una asistente virtual dedicada a ayudar a liberar tus consultas sobre Holberton Clinic!"
-        },
-        {
-            "user": "hola iris",
-            "assistant": "Hola! ¿En qué puedo ayudarte hoy?"
-        }
-    ],
-    "42429b5c-f17a-4b1b-b8a4-af3bda827278": [
-        {
-            "user": "Hola Iris!",
-            "assistant": "Hola! Soy Iris, una asistente virtual dedicada a ayudar a liberar tus consultas sobre Holberton Clinic!"
-        },
-        {
-            "user": "hola iris",
-            "assistant": "Hola! ¿En qué puedo ayudarte hoy?"
-        }
-    ],
-    "dec01997-eed8-4da1-ac01-62a4047274b8": [
-        {
-            "user": "Hola Iris!",
-            "assistant": "Hola! Soy Iris, una asistente virtual dedicada a ayudar a liberar tus consultas sobre Holberton Clinic!"
-        },
-        {
-            "user": "Hola Iris",
-            "assistant": "Hola!  ¿En qué puedo ayudarte hoy?"
-        }
-    ],
-    "2c88bcc6-2fa5-42ac-80d6-2399d6d5a1c3": [
-        {
-            "user": "Hola Iris!",
-            "assistant": "Hola! Soy Iris, una asistente virtual dedicada a ayudar a liberar tus consultas sobre Holberton Clinic!"
-        },
-        {
-            "user": "Hola Iris",
-            "assistant": "Hola!  ¿En qué puedo ayudarte hoy?"
-        },
-        {
-            "user": "Me gustaria agendarme para una consulta",
-            "assistant": "¡Claro! Para agendar tu consulta, necesito saber tu nombre completo y número de teléfono.  También, por favor, indícame la fecha y hora que te funcionan mejor. Una vez que tenga esta información, podré verificar la disponibilidad en mi calendario y confirmar tu cita."
-        },
-        {
-            "user": "Mi nombre es Axel Palombo, me sirviria agendarme el Miercoles 25 de Febrero del 2025 a las 16:00hs",
-            "assistant": "Axel Palombo, ¿el 25 de febrero a las 16:00 hs?  Por favor, dame tu número de teléfono para confirmar la cita.  Una vez que lo tenga, revisaré la disponibilidad y te confirmaré si esa hora está libre."
-        },
-        {
-            "user": "Mi numero de telefono es 093372618",
-            "assistant": "Gracias, Axel.  Estoy revisando la disponibilidad para el 25 de febrero a las 16:00 hs con el número 093372618.  En breve te enviaré una confirmación con la confirmación de la cita."
-        },
-        {
-            "user": "Hola Iris",
-            "assistant": "Hola. ¿En qué puedo ayudarte hoy?"
-        },
-        {
-            "user": "Mi nombre es Axel, me gustaria hablar con alguien de soporte humano",
-            "assistant": "Axel, para poder conectar con un agente de soporte humano, necesito tu nombre completo y tu correo electrónico.  Por favor, proporciónalos para que pueda conectar con el equipo de atención al cliente."
-        },
-        {
-            "user": "Claro, mi nombre es Axel Palombo y mi correo es Axel.palombo.ap@gmail.com",
-            "assistant": "Gracias, Axel Palombo.  En breve te conectaré con un agente de soporte humano.  Por favor, espera un momento."
-        },
-        {
-            "user": "Ya puedes conectarme con soporte humano?",
-            "assistant": "Lo siento, Axel.  No tengo la capacidad de conectar directamente con un agente humano.  ¿Hay algo más en lo que pueda ayudarte hoy?"
-        },
-        {
-            "user": "Me puedes agendar para una consulta en la clinica?",
-            "assistant": "Sí, puedo ayudarte a agendar una consulta.  Para ello, necesito tu nombre completo, correo electrónico y la fecha y hora que te funcionan mejor.  Por favor, proporcióname esa información."
-        },
-        {
-            "user": "Me puedes agendar para una consulta en la clinica?",
-            "assistant": "Sí, puedo ayudarte a agendar una consulta.  Para ello, necesito tu nombre completo, correo electrónico y la fecha y hora que te funcionan mejor.  Por favor, proporcióname esa información."
-        },
-        {
-            "user": "Mi nombre es Axel Palombo, mi correo es Axel.palombo.ap@gmail.com, me sirve agendarme para el Miercoles 26 de Febrero a las 16:00hs",
-            "assistant": "Axel Palombo,  26 de febrero a las 16:00 hs.  Estoy revisando la disponibilidad.  Por favor, espera un momento."
-        },
-        {
-            "user": "Está disponible para agendarme?",
-            "assistant": "Por favor, espera un momento mientras verifico la disponibilidad."
-        },
-        {
-            "user": "Agendame",
-            "assistant": "Para agendar tu cita, necesito tu número de teléfono.  Una vez que lo tenga, podré confirmar la cita en mi sistema.  Por favor, proporciona tu número de teléfono."
+            "user": "quiero informacion sobre dhi",
+            "assistant": "La técnica DHI (Direct Hair Implantation) es un procedimiento quirúrgico para el tratamiento de la alopecia.  Se enfoca en la implantación directa de folículos pilosos en áreas con pérdida de cabello.  A diferencia de otras técnicas, como la FUE, la DHI utiliza un instrumento para insertar directamente los folículos en la zona receptora.  Esto permite una mayor precisión y control, y potencialmente un resultado más natural.\n\n**Características clave de la técnica DHI:**\n\n* **Implantación directa:** Los folículos pilosos se colocan directamente en el cuero cabelludo con una herramienta especializada.\n* **Mayor precisión:** La implantación directa permite un mayor control y precisión en la colocación de los folículos, lo cual puede contribuir a un resultado más natural.\n* **Posibilidad de utilizar folículos más pequeños:**  Se pueden utilizar folículos más pequeños, lo que puede ser beneficioso para la restauración de áreas con menor densidad capilar.\n* **Menos trauma:**  Aunque no es cero, la técnica tiende a generar menos trauma en el cuero cabelludo que otras técnicas, potencialmente reduciendo el tiempo de recuperación.\n* **Potencial para mejores resultados estéticos:** La colocación precisa de los folículos puede contribuir a resultados estéticos más naturales.\n* **Tiempo de procedimiento:**  Generalmente, el procedimiento de DHI puede durar entre 4 y 9 horas, dependiendo de la extensión del área a tratar y la cantidad de folículos que se implantan.\n\n\n**Consideraciones importantes:**\n\n* **Profesional certificado:**  Es crucial que el procedimiento sea realizado por un cirujano o profesional certificado y con experiencia en la técnica DHI.\n* **Resultados graduales:** Los resultados de la DHI, como en cualquier procedimiento de implante capilar, no son inmediatos y se aprecian gradualmente.  Generalmente, se aprecian resultados notables entre los 3 a 4 meses posteriores al procedimiento.\n* **Evaluación previa:**  Es fundamental una evaluación previa con un profesional de la salud para determinar la idoneidad de la técnica DHI para tu caso específico y para determinar si eres un candidato adecuado.\n* **Posibles complicaciones:** Como cualquier procedimiento quirúrgico, la DHI conlleva posibles complicaciones, aunque generalmente son menores.  Es importante discutir estos riesgos con el profesional de la salud antes de proceder.\n\n¿Te gustaría saber más sobre algún aspecto específico de la técnica DHI, como los costos, la recuperación o las posibles complicaciones?"
         }
     ]
 }

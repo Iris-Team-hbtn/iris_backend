@@ -6,11 +6,11 @@ from dotenv import load_dotenv
 load_dotenv()
 firebaseConfig = {
   'apiKey': os.getenv("FIREBASE_API_KEY"),
-  'authDomain': "htbn-final-project.firebaseapp.com",
-  'projectId': "htbn-final-project",
-  'storageBucket': "htbn-final-project.firebasestorage.app",
-  'messagingSenderId': "85744476044",
-  'appId': "1:85744476044:web:c622fa9a21d442880b40a9",
+  'authDomain': os.getenv("FIREBASE_AUTH_DOMAIN"),
+  'projectId': os.getenv("FIREBASE_PROJECT_ID"),
+  'storageBucket': os.getenv("FIREBASE_STORAGE_BUCKET"),
+  'messagingSenderId': os.getenv("FIREBASE_MESSAGING_SENDER_ID"),
+  'appId': "FIREBASE_APP_ID",
   'databaseURL': ""
 }
 
