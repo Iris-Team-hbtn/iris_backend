@@ -15,9 +15,12 @@ firebaseConfig = {
 }
 
 def createVS():
-  firebase = pyrebase.initialize_app(firebaseConfig)
-  storage = firebase.storage()
+  try:
+    firebase = pyrebase.initialize_app(firebaseConfig)
+    storage = firebase.storage()
 
-  storage.child("protocoloIris.pdf").download(filename="protocoloIris.pdf", path="./")
-
-  return vectorstore('./protocoloIris.pdf')
+    storage.child("protocoloIris.pdf").download(filename="protocoloIris.pdf", path="./")
+    return vectorstore('./protocoloIris.pdf')
+  except Exception as e:
+    print(f"Error initializing VectorStore: {e}")
+    return None
