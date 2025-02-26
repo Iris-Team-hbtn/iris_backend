@@ -53,7 +53,7 @@ class ObjectCreator:
 
         # Clasifica el mensaje del usuario
         response = self.llm.invoke([SystemMessage(content=system_prompt), HumanMessage(content=chat_history)])
-        if response.content:
+        if response.content != "{}":
             return response.content
         return
 
@@ -82,6 +82,6 @@ class ObjectCreator:
 
         # Clasifica el mensaje del usuario
         response = self.llm.invoke([SystemMessage(content=system_prompt), HumanMessage(content=chat_history)])
-        if response.content:
+        if response.content != "{}":
             return response.content
         return
