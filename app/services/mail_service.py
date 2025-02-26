@@ -17,7 +17,7 @@ class MailService:
         body = ''
         if subject == 'user_question':
             body = f"""
-            Hola {obj.get('fullname')},
+            Hola,
 
             Un usuario ha solicitado asistencia humana. Aquí están los detalles:
 
