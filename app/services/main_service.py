@@ -8,6 +8,7 @@ from app.services.gemini_service import IrisAI
 from app.services.creator_service import ObjectCreator
 from app.services.toolkits import ToolkitService
 import json
+import re
 
 class MainCaller:
 
@@ -42,7 +43,7 @@ class MainCaller:
         """
         history_text = "\n".join(
                 [f"Usuario: {e['user']}\nAsistente: {e['assistant']}" for e in chat_history]
-            )
+            ) or ""
         system_prompt += history_text
         # Clasifica el mensaje del usuario
         response = self.llm.invoke([SystemMessage(content=system_prompt), HumanMessage(content=user_input)])
@@ -52,11 +53,19 @@ class MainCaller:
             case '2':
                 mail_obj = creator.email_object(user_id=user_id)
                 if mail_obj:
-                    email_obj = json.loads(mail_obj)
-                    email_obj["user_question"] = user_input
-                    print(email_obj)
-                    self.create_support_mail(email_obj)
-                    return
+                    match = re.search(r"\{.*\}", mail_obj.strip(), re.DOTALL)
+
+                    if match:
+                        json_text = match.group(0)
+                        try:
+                            email_obj = json.loads(json_text)
+                            print(email_obj)
+                            self.create_support_mail(email_obj)
+                            return "Tu consulta ha sido elevada a soporte con éxito."
+                        except json.JSONDecodeError:
+                            print("Error al decodificar JSON, contenido inválido.")
+                    else:
+                        print("No se encontró un JSON válido en la respuesta.")
 
                 return iris.call_iris(user_input=user_input, user_id=user_id)
 
@@ -64,10 +73,20 @@ class MainCaller:
                 schedule_date = creator.date_object(user_id=user_id)
                 print(f"Este es el string que salio del creador de objetos {schedule_date}")
                 if schedule_date:
-                    date_obj = json.loads(schedule_date)
-                    print(date_obj)
-                    self.create_event(date_obj)
-                    return
+                    match = re.search(r"\{.*\}", schedule_date.strip(), re.DOTALL)
+
+                    if match:
+                        json_text = match.group(0)
+                        try:
+                            date_obj = json.loads(json_text)
+                            print(date_obj)
+                            self.create_event(date_obj)
+                            return "Has sido agendado con éxito."
+                        except json.JSONDecodeError:
+                            print("Error al decodificar JSON, contenido inválido.")
+                    else:
+                        print("No se encontró un JSON válido en la respuesta.")
+
 
                 return iris.call_iris(user_input=user_input, user_id=user_id)
 

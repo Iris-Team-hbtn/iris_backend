@@ -20,7 +20,7 @@ class ObjectCreator:
         self.toolkit = ToolkitService()
 
     def date_object(self, user_id):
-        chat_history = self.toolkit._load_chat_history(user_id)
+        chat_history = self.toolkit._load_chat_history(user_id) or "No hay historial de chat"
         
         # Según el user_input, define a que servicio se deriva lo siguiente
         system_prompt = """
@@ -29,8 +29,8 @@ class ObjectCreator:
         El formato estricto del objeto debe ser:
 
         {
-            "fullname": "string",
-            "email": "string",
+            "fullname": string,
+            "email": string,
             "day": int,
             "month": int,
             "year": int,
@@ -59,7 +59,7 @@ class ObjectCreator:
 
 
     def email_object(self, user_id):
-        chat_history = self.toolkit._load_chat_history(user_id)
+        chat_history = self.toolkit._load_chat_history(user_id) or "No hay historial de chat"
         # Según el user_input, define a que servicio se deriva lo siguiente
         system_prompt = """
         Tu tarea es generar SOLO un objeto JSON con la información del usuario, sin ningún texto adicional.
@@ -67,8 +67,9 @@ class ObjectCreator:
         El formato estricto del objeto debe ser:
 
         {
-            "fullname": "string",
-            "email": "string"
+            "fullname": string,
+            "email": string,
+            "user_question": string
         }
 
         No añadas comillas, ni ningún otro texto o símbolo fuera del JSON. Si falta algún dato, devuelve exactamente lo siguiente:
