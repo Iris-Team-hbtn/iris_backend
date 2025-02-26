@@ -12,11 +12,15 @@ class IrisAI:
         self._google_api_key = os.getenv("GOOGLE_API_KEY", "")
         self.llm = ChatGoogleGenerativeAI(
             model="gemini-1.5-flash-8b",
-            temperature=0.7,
+            temperature=0.5,
             max_tokens=None,
             timeout=None,
             max_retries=2,
-            stream=True  # Streaming activado
+            stream=True,
+            google_api_options={
+                'disable_web_search': True,
+                'strict_content_filter': True
+            }
         )
         self.toolkit = ToolkitService()
 
