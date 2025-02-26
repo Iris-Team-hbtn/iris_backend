@@ -6,6 +6,7 @@ from app.services.mail_service import MailService
 from app.services.calendar_service import CalendarService
 from app.services.gemini_service import IrisAI
 from app.services.creator_service import ObjectCreator
+from app.services.scheduler_service import EventScheduler
 from app.services.toolkits import ToolkitService
 import json
 import re
@@ -21,7 +22,6 @@ class MainCaller:
             max_tokens=None,
             timeout=None,
             max_retries=2,
-            stream=True  # Streaming activado
         )
         self.toolkit = ToolkitService()
 
@@ -29,6 +29,7 @@ class MainCaller:
         # Instanciamos servicios
         iris = IrisAI()
         creator = ObjectCreator()
+        eventscheduler = EventScheduler()
         chat_history = self.toolkit._load_chat_history(user_id)
         # Según el user_input, define a que servicio se deriva lo siguiente
         system_prompt = """
@@ -73,20 +74,23 @@ class MainCaller:
                 schedule_date = creator.date_object(user_id=user_id)
                 print(f"Este es el string que salio del creador de objetos {schedule_date}")
                 if schedule_date:
-                    match = re.search(r"\{.*\}", schedule_date.strip(), re.DOTALL)
+                    availability = eventscheduler.check(schedule_date)
+                    if availability == 'Disponible':
+                        match = re.search(r"\{.*\}", schedule_date.strip(), re.DOTALL)
 
-                    if match:
-                        json_text = match.group(0)
-                        try:
-                            date_obj = json.loads(json_text)
-                            print(date_obj)
-                            self.create_event(date_obj)
-                            return "Has sido agendado con éxito."
-                        except json.JSONDecodeError:
-                            print("Error al decodificar JSON, contenido inválido.")
-                    else:
-                        print("No se encontró un JSON válido en la respuesta.")
-
+                        if match:
+                            json_text = match.group(0)
+                            try:
+                                date_obj = json.loads(json_text)
+                                print(date_obj)
+                                if date_obj:
+                                    self.create_event(date_obj)
+                                    return "Has sido agendado con éxito."
+                                return iris.call_iris(user_input=user_input, user_id=user_id)
+                            except json.JSONDecodeError:
+                                print("Error al decodificar JSON, contenido inválido.")
+                        else:
+                            print("No se encontró un JSON válido en la respuesta.")
 
                 return iris.call_iris(user_input=user_input, user_id=user_id)
 

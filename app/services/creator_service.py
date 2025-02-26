@@ -15,7 +15,6 @@ class ObjectCreator:
             max_tokens=None,
             timeout=None,
             max_retries=2,
-            stream=True  # Streaming activado
         )
         self.toolkit = ToolkitService()
 

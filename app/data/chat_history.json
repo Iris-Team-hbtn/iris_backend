@@ -15,6 +15,14 @@
         {
             "user": "Quisiera saber sobre los costos de los tratamientos con duración de más de 10 sesiones",
             "assistant": "Lamento no tener información específica sobre costos de tratamientos con más de 10 sesiones. Para obtener una cotización precisa, te recomiendo agendar una consulta.  ¿Podrías facilitarme tu nombre completo y una fecha y hora que te convenga para la cita?"
+        },
+        {
+            "user": "Quiero agendarme para el Jueves 27 de Febrero a las 12hs",
+            "assistant": "Axel Palombo,  ¿puedes confirmar tu correo electrónico por favor?  Necesitaré esa información para agendar la cita en el calendario.  Una vez que me proporciones tu correo electrónico, podré verificar la disponibilidad para el jueves 27 de febrero a las 12 hs."
+        },
+        {
+            "user": "Axel.palombo.ap@gmail.com",
+            "assistant": "Gracias Axel.  Estoy verificando la disponibilidad para el jueves 27 de febrero a las 12 hs.  Por favor, espera un momento."
         }
     ]
 }
