@@ -19,16 +19,27 @@ Iris is a chatbot designed to help aesthetic health clinics filter potential cli
 │   ├── /api/v1
 │   │   ├── __init__.py
 │   │   ├── iris.py    # Defines the routes for Iris
+│   └── /data
+│   │     ├── prompts.py    # Indications/Rules for Iris
+│   │     ├── chat_history.json    # The stored history from Iris
 │   └── /models
-│       ├── modelgemini_service.py    # Google API configuration
-│       ├── vectorstore.py    # Vectorstore management
+│   │     ├── modelgemini_service.py    # Google API configuration
+│   │     ├── vectorstore.py    # Vectorstore management
 │   └── /services
-│       ├── model.py    # Firebase connection
-│       ├── calendar_service.py    # Google calendar configuration
-│   └── ├── __init__.py    # Create the app flask with Iris and a Blueprint for calendar
+│   │     ├── creator_service.py    # Define the services
+│   │     ├── model.py    # Firebase connection
+│   │     ├── calendar_service.py    # Google calendar configuration
+│   │     ├── gemini_service.py    # Implements an AI chat system using Google's Gemini
+│   │     ├── mail_Service.py    # Implements the config for mail managment
+│   │     ├── scheduler_service.py    # Implements the scheduler managment
+│   │     ├── toolkits.py    # Tools to be used (methods and functions)
+│   │
+│   └── __init__.py    # Create the app flask with Iris and a Blueprint for calendar
+├── .env    # Keep yours Keys save
+├── app.py    # Create the app
 ├── config.py    # Configuration
 ├── run.py    # Main API entry
-└── requirements.txt
+└── requirements.txt # The requirements needed
 ```
 
 ## Setup Instructions
