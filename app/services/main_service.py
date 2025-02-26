@@ -31,6 +31,24 @@ class MainCaller:
         creator = ObjectCreator()
         eventscheduler = EventScheduler()
         chat_history = self.toolkit._load_chat_history(user_id)
+
+        if not chat_history:
+            welcome_message = {
+                "user": "Hola Iris!",
+                "assistant": "Hola! Soy Iris, una asistente virtual dedicada a ayudar a liberar tus consultas sobre Holberton Clinic!"
+            }
+            chat_history.append(welcome_message)
+
+        if self.toolkit.should_summarize(user_id):
+            summary_prompt = "Resume brevemente el siguiente historial de conversación, guardando información clave:"
+            history_text = "\n".join(
+                [f"Usuario: {e['user']}\nAsistente: {e['assistant']}" for e in chat_history]
+            )
+            print(f"history text es: {history_text}")
+            summary_response = self.llm.invoke([SystemMessage(content=summary_prompt), HumanMessage(content=history_text)])
+            print(summary_response)
+            chat_history = [{"user": "Resumen", "assistant": summary_response.content}]
+
         # Según el user_input, define a que servicio se deriva lo siguiente
         system_prompt = """
         Tu rol es clasificar los mensajes dentro de las siguientes categorías:
@@ -55,12 +73,10 @@ class MainCaller:
                 mail_obj = creator.email_object(user_id=user_id)
                 if mail_obj:
                     match = re.search(r"\{.*\}", mail_obj.strip(), re.DOTALL)
-
                     if match:
                         json_text = match.group(0)
                         try:
                             email_obj = json.loads(json_text)
-                            print(email_obj)
                             self.create_support_mail(email_obj)
                             return "Tu consulta ha sido elevada a soporte con éxito."
                         except json.JSONDecodeError:
@@ -74,24 +90,26 @@ class MainCaller:
                 schedule_date = creator.date_object(user_id=user_id)
                 print(f"Este es el string que salio del creador de objetos {schedule_date}")
                 if schedule_date:
-                    availability = eventscheduler.check(schedule_date)
-                    if availability == 'Disponible':
-                        match = re.search(r"\{.*\}", schedule_date.strip(), re.DOTALL)
-
-                        if match:
-                            json_text = match.group(0)
-                            try:
-                                date_obj = json.loads(json_text)
-                                print(date_obj)
-                                if date_obj:
+                    match = re.search(r"\{.*\}", schedule_date.strip(), re.DOTALL)
+                    if match:
+                        json_text = match.group(0)
+                        try:
+                            date_obj = json.loads(json_text)
+                            print(date_obj)
+                            if date_obj:
+                                availability = eventscheduler.check(day=date_obj['day'], month=date_obj['month'], starttime=date_obj['starttime'])
+                                print(availability)
+                                if availability == 'Disponible':
                                     self.create_event(date_obj)
                                     return "Has sido agendado con éxito."
-                                return iris.call_iris(user_input=user_input, user_id=user_id)
-                            except json.JSONDecodeError:
-                                print("Error al decodificar JSON, contenido inválido.")
-                        else:
+                                else:
+                                    user_input += "Los horarios disponibles para el dia que consulta el usuario son: " + availability
+                                    return iris.call_iris(user_input=user_input, user_id=user_id)
+                        except json.JSONDecodeError:
+                            print("Error al decodificar JSON, contenido inválido.")
+                    else:
                             print("No se encontró un JSON válido en la respuesta.")
-
+                        
                 return iris.call_iris(user_input=user_input, user_id=user_id)
 
             case _: 

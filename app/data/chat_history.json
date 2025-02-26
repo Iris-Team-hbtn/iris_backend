@@ -1,28 +1,40 @@
 {
     "2c88bcc6-2fa5-42ac-80d6-2399d6d5a1c3": [
         {
-            "user": "Hola Iris!",
-            "assistant": "Hola! Soy Iris, una asistente virtual dedicada a ayudar a liberar tus consultas sobre Holberton Clinic!"
+            "user": "El domingo 3 de marzo a las 13hs me gustaria agendar una consulta",
+            "assistant": "Por favor, dime tu nombre completo y correo electrónico para poder agendar la cita. También necesito saber si prefieres la consulta vía telefónica o presencial."
         },
         {
-            "user": "Hola Iris, mi nombre es Axel Palombo y me gustaria elevar una consulta a soporte",
-            "assistant": "Hola Axel Palombo. Para poder ayudarte, necesito tu correo electrónico."
+            "user": "Axel Palombo es mi nombre, mi correo es Axel.palombo.ap@gmail.com",
+            "assistant": "¿Prefieres la consulta vía telefónica o presencial?  Una vez que sepas eso, puedo verificar la disponibilidad el domingo 3 de marzo a las 13 hs."
         },
         {
-            "user": "Mi correo electronico es Axel.palombo.ap@gmail.com",
-            "assistant": "Gracias Axel.  Por favor, cuéntame sobre tu consulta."
+            "user": "Confirmar",
+            "assistant": "Lo siento, necesito saber si prefieres la consulta vía telefónica o presencial para poder verificar la disponibilidad."
         },
         {
-            "user": "Quisiera saber sobre los costos de los tratamientos con duración de más de 10 sesiones",
-            "assistant": "Lamento no tener información específica sobre costos de tratamientos con más de 10 sesiones. Para obtener una cotización precisa, te recomiendo agendar una consulta.  ¿Podrías facilitarme tu nombre completo y una fecha y hora que te convenga para la cita?"
+            "user": "Presencial",
+            "assistant": "Por favor, confirma si la consulta el domingo 3 de marzo a las 13 hs, en formato presencial, te conviene.  Si es así, la cita está confirmada.  Si no, dime otra fecha y hora que te sea conveniente."
         },
         {
-            "user": "Quiero agendarme para el Jueves 27 de Febrero a las 12hs",
-            "assistant": "Axel Palombo,  ¿puedes confirmar tu correo electrónico por favor?  Necesitaré esa información para agendar la cita en el calendario.  Una vez que me proporciones tu correo electrónico, podré verificar la disponibilidad para el jueves 27 de febrero a las 12 hs."
+            "user": "Los horarios disponibles para el dia que consulta el usuario son: Disponible a las 11:00, 12:00, 14:00, 15:00, 16:00, 17:00 y 18:00.",
+            "assistant": "Axel, gracias por la información.  De los horarios disponibles el domingo 3 de marzo, a las 11:00, 12:00, 14:00, 15:00, 16:00, 17:00 y 18:00, ¿cuál te conviene?"
         },
         {
-            "user": "Axel.palombo.ap@gmail.com",
-            "assistant": "Gracias Axel.  Estoy verificando la disponibilidad para el jueves 27 de febrero a las 12 hs.  Por favor, espera un momento."
+            "user": "Los horarios disponibles para el dia que consulta el usuario son: Disponible a las 11:00, 12:00, 14:00, 15:00, 16:00, 17:00 y 18:00.",
+            "assistant": "Axel,  los horarios disponibles para el domingo 3 de marzo son: 11:00, 12:00, 14:00, 15:00, 16:00, 17:00 y 18:00.  ¿Cuál de estos te resulta más conveniente?"
+        },
+        {
+            "user": "Los horarios disponibles para el dia que consulta el usuario son: Disponible a las 11:00, 12:00, 14:00, 15:00, 16:00, 17:00 y 18:00.",
+            "assistant": "Axel,  los horarios disponibles para el domingo 3 de marzo son: 11:00, 12:00, 14:00, 15:00, 16:00, 17:00 y 18:00.  ¿Cuál de estos te resulta más conveniente?"
+        },
+        {
+            "user": "Los horarios disponibles para el dia que consulta el usuario son: Disponible a las 11:00, 12:00, 14:00, 15:00, 16:00, 17:00 y 18:00.",
+            "assistant": "Axel,  los horarios disponibles para el domingo 3 de marzo son: 11:00, 12:00, 14:00, 15:00, 16:00, 17:00 y 18:00.  ¿Cuál te conviene?"
+        },
+        {
+            "user": "Te dije que a las 14hs me quiero agendarLos horarios disponibles para el dia que consulta el usuario son: Disponible a las 11:00, 12:00, 14:00, 15:00, 16:00, 17:00 y 18:00.",
+            "assistant": "Perfecto, Axel.  La cita para el domingo 3 de marzo a las 14:00 hs está agendada.  Gracias por tu consulta."
         }
     ]
 }

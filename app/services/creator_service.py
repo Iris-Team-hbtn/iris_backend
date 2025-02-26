@@ -24,7 +24,7 @@ class ObjectCreator:
         # Según el user_input, define a que servicio se deriva lo siguiente
         system_prompt = """
         Tu tarea es generar SOLO un objeto JSON con la información del usuario, sin ningún texto adicional.
-
+        Si faltan datos para generar el objeto, no lo generes.
         El formato estricto del objeto debe ser:
 
         {

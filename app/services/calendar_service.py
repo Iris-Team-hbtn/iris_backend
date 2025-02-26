@@ -59,7 +59,6 @@ class CalendarService:
                 start = event["start"].get("dateTime", event["start"].get("date"))
                 start = start[:-6]
                 event_list.append({'date': start})
-                print(start, event["summary"])
             return event_list
 
         except HttpError as error:
