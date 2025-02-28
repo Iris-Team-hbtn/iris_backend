@@ -42,10 +42,10 @@ class Query(Resource):
         if not response:
             return {"error": "There is no information about this."}, 404
     
-        #Configuramos la respuesta en cookie
+        # Configuramos la respuesta en cookie
         resp = {"response": response}
         response = make_response(jsonify(resp), 200)
-        response.set_cookie('user_id', user_id, max_age=30*24*60*60, path='/', httponly=True, secure=False, domain="localhost")  # cookie solo por 1 dia
+        response.set_cookie('user_id', user_id, max_age=30*24*60*60, path='/', httponly=True, secure=False, domain="localhost")  # cookie por 30 días
         print(response)
         return response
 
