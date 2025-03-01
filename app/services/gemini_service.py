@@ -1,6 +1,7 @@
 from langchain_google_genai import ChatGoogleGenerativeAI 
 from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 import os
+import markdown
 from dotenv import load_dotenv
 from collections import deque
 from app.data.prompts import system_prompt
@@ -30,6 +31,10 @@ class IrisAI:
         # Si el email es válido, procesar el envío (esto es solo un ejemplo)
         self.mail_service.send_email(user_id, user_input)
         return "Correo enviado con éxito."
+
+    def format_response(self, text):
+        """Convierte el texto de la IA a Markdown para mejor presentación."""
+        return markdown.markdown(text)
 
     def call_iris(self, user_input, user_id):
         # Verificar si la consulta ya fue enviada
@@ -62,10 +67,11 @@ class IrisAI:
         # Generar respuesta
         response = self.llm.invoke(messages)
 
-        # Guardar en historial
-        chat_history.append({"user": user_input, "assistant": response.content})
+        # Convertir respuesta a Markdown
+        formatted_response = self.format_response(response.content)
 
-        # Guardar como lista en lugar de deque
+        # Guardar en historial
+        chat_history.append({"user": user_input, "assistant": formatted_response})
         self.toolkit._save_chat_history(user_id, list(chat_history))
 
-        return response.content
+        return {"text": formatted_response}
