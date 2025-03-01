@@ -24,13 +24,13 @@ class ToolkitService:
     def _load_chat_history(self, user_id):
         """Carga el historial desde un archivo JSON."""
         if not os.path.exists(self.HISTORY_FILE):
-            return []
+            return deque(maxlen=MAX_HISTORY)
         try:
             with open(self.HISTORY_FILE, "r", encoding="utf-8") as file:
                 data = json.load(file)
-                return data.get(str(user_id), [])
+                return deque(data.get(str(user_id), []), maxlen=MAX_HISTORY)
         except (json.JSONDecodeError, FileNotFoundError):
-            return []
+            return deque(maxlen=MAX_HISTORY)
 
     def _save_chat_history(self, user_id, chat_history):
         """Guarda el historial en un archivo JSON."""
@@ -41,9 +41,12 @@ class ToolkitService:
                     data = json.load(file)
                 except json.JSONDecodeError:
                     pass
-        data[str(user_id)] = deque(chat_history, maxlen=MAX_HISTORY)
+
+        data[str(user_id)] = list(deque(chat_history, maxlen=MAX_HISTORY))
+
         with open(self.HISTORY_FILE, "w", encoding="utf-8") as file:
             json.dump(data, file, ensure_ascii=False, indent=4)
+
         self.message_counter[user_id] = self.message_counter.get(user_id, 0) + 1
 
     def should_summarize(self, user_id):
@@ -66,9 +69,10 @@ class ToolkitService:
 def get_or_create_user_id():
     """Gestiona la creación/obtención de user_id mediante cookies."""
     user_id = request.cookies.get("user_id")
+
     if not user_id:
         user_id = str(uuid.uuid4())
         resp = make_response()
         resp.set_cookie("user_id", user_id, max_age=24*60*60)
-        return user_id
-    return user_id
+        return user_id, resp
+    return user_id, None

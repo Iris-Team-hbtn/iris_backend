@@ -1,2 +1,24 @@
 {
-    "f9249825-1794-4ecf-a206-ad39d664b71f": 
+    "baba3ec5-ed36-4cb6-b754-da807a2ce799": [
+        {
+            "user": "Quisiera agendarme",
+            "assistant": "Para agendar una consulta, necesito tu nombre completo, correo electrónico, fecha y hora preferida.  Por favor, proporciona esa información.  Recuerda que solo ofrecemos consultas presenciales."
+        },
+        {
+            "user": "Quisiera agendarmeAlexis Rodriguez, alsmdakslda$ñlasl, 3/03/2025",
+            "assistant": "Lo siento, el correo electrónico que proporcionaste no es válido.  Por favor, proporciona un correo electrónico válido para poder agendar la consulta.  También necesito la hora específica que prefieres para el 3 de marzo de 2025."
+        },
+        {
+            "user": "Quisiera agendarmeAlexis Rodriguez, alexisoblivion@gmail.com, 3/03/2025",
+            "assistant": "Alexis Rodriguez, alexisoblivion@gmail.com, 3 de marzo de 2025.  ¿Qué hora te gustaría?  Por favor, dame varias opciones de hora para el día 3 de marzo.  Necesito verificar disponibilidad en Google Calendar."
+        },
+        {
+            "user": "que horarios tienes disponibles para ese dia?",
+            "assistant": "Lo siento, no tengo acceso a mi calendario para verificar disponibilidad.  Para agendar una cita necesito que me digas las horas que te funcionan y te confirmaré si hay disponibilidad.  Por favor, menciona las horas que te gustaría."
+        },
+        {
+            "user": "13.50",
+            "assistant": "13:50 horas del 3 de marzo de 2025.  ¿Hay alguna otra hora que te funcione?  Si no, puedo confirmarte la cita."
+        }
+    ]
+}

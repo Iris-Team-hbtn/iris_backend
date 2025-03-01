@@ -35,19 +35,24 @@ class Query(Resource):
         if not data or "query" not in data:
             return {"error": "Datos de entrada inválidos."}, 400
 
-        user_id = get_or_create_user_id()
+        user_id, user_response = get_or_create_user_id()
         user_question = data["query"]
 
         response = main_caller.call(user_question, user_id=user_id)
+
         if not response:
             return {"error": "There is no information about this."}, 404
-    
-        # Configuramos la respuesta en cookie
+        
         resp = {"response": response}
-        response = make_response(jsonify(resp), 200)
-        response.set_cookie('user_id', user_id, max_age=30*24*60*60, path='/', httponly=True, secure=False, domain="localhost")  # cookie por 30 días
-        print(response)
-        return response
+    
+        # Si se creó un nuevo user_id, devolvemos la respuesta con la cookie ya establecida
+        if user_response:
+            user_response.set_data(jsonify(resp).get_data())  # Adjuntar los datos a la respuesta
+            user_response.status_code = 200
+            return user_response
+        
+        # Si ya existía el user_id, devolvemos solo la respuesta JSON
+        return make_response(jsonify(resp), 200)
 
 @api.route('/appointments')
 class Calendar(Resource):
