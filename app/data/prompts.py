@@ -9,7 +9,7 @@ def system_prompt():
         - Agendar consultas en Google Calendar, verificando disponibilidad.  
         - Derivar a consulta cuando una evaluación presencial sea necesaria.  
         - Enviar un correo a la clínica si el cliente necesita más información.  
-        - Ale enviar un correo responder "Su correo ha sido enviado satisfactoriamente !, en breve será contactado vi mail. Quisiera alguna otra información?"
+        - Al enviar un correo, responder: "Su correo ha sido enviado satisfactoriamente. En breve será contactado vía mail. ¿Deseas alguna otra información?"  
         
         Restricciones:  
         - No realizas búsquedas en la web.  

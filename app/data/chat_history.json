@@ -20,5 +20,27 @@
             "user": "13.50",
             "assistant": "13:50 horas del 3 de marzo de 2025.  ¿Hay alguna otra hora que te funcione?  Si no, puedo confirmarte la cita."
         }
+    ],
+    "90f38b26-6b23-4ae7-9f9c-b2c9c8bbf67f": [
+        {
+            "user": "Dame mas detalles en general de la DHI",
+            "assistant": "<p>La técnica DHI (Direct Hair Implantation) se caracteriza por la inserción directa de los folículos pilosos en el cuero cabelludo, utilizando una aguja o herramienta similar.  A diferencia de otras técnicas como la FUE, donde se extraen y se colocan los folículos de forma individual, en DHI se trabaja con unidades foliculares completas.</p>\n<p><strong>Ventajas de la técnica DHI:</strong></p>\n<ul>\n<li><strong>Menos trauma:</strong>  La inserción directa minimiza el daño al tejido circundante, lo que puede resultar en una recuperación más rápida y menos dolor.</li>\n<li><strong>Mayor densidad capilar:</strong> La colocación de unidades foliculares completas en la zona receptora puede lograr una mayor densidad capilar en comparación con otras técnicas.</li>\n<li><strong>Mejor estética:</strong> La inserción precisa de los folículos permite una mejor integración estética de los nuevos cabellos, con un aspecto más natural.</li>\n<li><strong>Menos tiempo de intervención:</strong> En algunos casos, el procedimiento puede ser más corto que con la técnica FUE.</li>\n</ul>\n<p><strong>Desventajas de la técnica DHI:</strong></p>\n<ul>\n<li><strong>Mayor complejidad:</strong>  Requiere un alto nivel de habilidad y experiencia por parte del cirujano.</li>\n<li><strong>Mayor costo:</strong>  Generalmente, el costo de la técnica DHI es superior al de la FUE.</li>\n<li><strong>Mayor riesgo de complicaciones:</strong> Si no se realiza correctamente, puede aumentar el riesgo de infección o cicatrices.</li>\n</ul>\n<p><strong>Proceso general:</strong></p>\n<ol>\n<li><strong>Evaluación inicial:</strong> Se realiza una evaluación exhaustiva del cuero cabelludo para determinar la zona donante y receptora, el número de folículos necesarios y la técnica más adecuada.</li>\n<li><strong>Extracción de folículos:</strong>  Si bien se habla de inserción directa, la extracción de los folículos se realiza previamente, generalmente mediante la técnica FUE.</li>\n<li><strong>Preparación del cuero cabelludo:</strong> Se prepara la zona receptora del cuero cabelludo para la inserción de los folículos.</li>\n<li><strong>Inserción directa:</strong> Los folículos pilosos se colocan directamente en la zona receptora.</li>\n<li><strong>Cuidados postoperatorios:</strong> Se requiere un cuidado postoperatorio específico para asegurar una correcta cicatrización y evitar complicaciones.</li>\n</ol>\n<p><strong>Resultados:</strong></p>\n<p>Los resultados de la técnica DHI son visibles a partir de los 3-4 meses, y la densidad capilar se irá consolidando en los meses siguientes. Los resultados finales pueden apreciarse aproximadamente entre los 6 y 12 meses.</p>\n<p><strong>Consideraciones adicionales:</strong></p>\n<p>Es crucial elegir un profesional con amplia experiencia y certificación en la técnica DHI.  La calidad de los resultados depende en gran medida de la habilidad y experiencia del profesional que realiza el procedimiento.  ¿Te gustaría agendar una consulta para obtener más información específica sobre la técnica DHI y si es la adecuada para ti?</p>"
+        },
+        {
+            "user": "Quiero contactar con un humano",
+            "assistant": "<p>Para poder contactar con un profesional de la clínica, necesito tu nombre completo y correo electrónico.  Por favor, proporciónalos.</p>"
+        },
+        {
+            "user": "Si, por favorAlexis Rodriguez, alexisoblivion@gmail.com,  10/03, 13.00?",
+            "assistant": "<p>Gracias, Alexis Rodríguez.  He anotado tu cita para el 10 de marzo a las 13:00 horas.  Por favor, revisa tu correo electrónico  alexisoblivion@gmail.com para verificar la disponibilidad. Si la fecha y hora te sirven, tu cita está confirmada. Si necesitas hacer algún cambio, házmelo saber.</p>"
+        },
+        {
+            "user": "Si, por favorAlexis Rodriguez, alexisoblivion@gmail.com,  10/03, 13.00?",
+            "assistant": "<p>Gracias, Alexis Rodríguez.  He anotado tu cita para el 10 de marzo a las 13:00 horas en tu correo electrónico  alexisoblivion@gmail.com.  Por favor, revisa tu correo para confirmar la disponibilidad.  Si la fecha y hora te sirven, tu cita está confirmada. Si necesitas hacer algún cambio, házmelo saber.</p>"
+        },
+        {
+            "user": "Si, por favorAlexis Rodriguez, alexisoblivion@gmail.com,  10/03, 13.00?",
+            "assistant": "<p>Gracias, Alexis Rodríguez.  He anotado tu cita para el 10 de marzo a las 13:00 horas.  Por favor, revisa tu correo electrónico  alexisoblivion@gmail.com para verificar la disponibilidad.  Si la fecha y hora te sirven, tu cita está confirmada. Si necesitas hacer algún cambio, házmelo saber.</p>"
+        }
     ]
 }
