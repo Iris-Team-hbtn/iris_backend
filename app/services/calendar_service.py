@@ -15,6 +15,7 @@ class CalendarService:
     
     def __init__(self):
         self._auth()
+        self.clinic_email = "yuntxwillover@gmail.com"
 
     def _auth(self):
         base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -41,24 +42,27 @@ class CalendarService:
             time_max = (now + dt.timedelta(weeks=2)).isoformat() + "Z"
 
             event_result = service.events().list(
-            calendarId="primary",
-            timeMin=time_min,
-            timeMax=time_max,
-            singleEvents=True,
-            orderBy="startTime"
+                calendarId="primary",
+                timeMin=time_min,
+                timeMax=time_max,
+                singleEvents=True,
+                orderBy="startTime"
             ).execute()
 
             events = event_result.get("items", [])
-
             if not events:
                 print("No upcoming events found")
                 return []
-            
+
             event_list = []
             for event in events:
                 start = event["start"].get("dateTime", event["start"].get("date"))
                 start = start[:-6]
-                event_list.append({'date': start})
+
+                attendees = event.get("attendees", [])
+                attendee_emails = {a["email"] for a in attendees if a["email"] != self.clinic_email}
+
+                event_list.append({'date': start, 'attendees': list(attendee_emails)})
             return event_list
 
         except HttpError as error:
@@ -93,3 +97,13 @@ class CalendarService:
         event = service.events().insert(calendarId="primary", body=event).execute()
         print(f"Event created {event.get('htmlLink')}")
         return event
+    
+    def getUniqueAttendees(self):
+        """Obtiene un conjunto de correos únicos de los asistentes a los eventos, excluyendo el de la clínica."""
+        events = self.listEvents()
+        unique_attendees = set()
+        
+        for event in events:
+            unique_attendees.update(event["attendees"])
+
+        return unique_attendees

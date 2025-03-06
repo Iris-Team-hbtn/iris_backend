@@ -3,6 +3,7 @@ from langchain_core.messages import SystemMessage, HumanMessage
 import os
 from dotenv import load_dotenv
 from app.services.toolkits import ToolkitService
+from datetime import datetime
 
 class ObjectCreator:
 
@@ -18,13 +19,13 @@ class ObjectCreator:
         )
         self.toolkit = ToolkitService()
 
-    def date_object(self, user_id):
+    def date_object(self, user_input, user_id):
         chat_history = self.toolkit._load_chat_history(user_id) or "No hay historial de chat"
         
         # Según el user_input, define a que servicio se deriva lo siguiente
         system_prompt = """
         Tu tarea es generar SOLO un objeto JSON con la información del usuario, sin ningún texto adicional.
-        Si faltan datos para generar el objeto, no lo generes.
+        No supongas datos, si no los tienes no generes el objeto.
         El formato estricto del objeto debe ser:
 
         {
@@ -47,17 +48,27 @@ class ObjectCreator:
 
         {}
         
-        A continuación se te proporcionará el historial de chat del usuario. Utiliza esta información para completar los campos del objeto JSON.
+        A continuación se te proporcionará el historial de chat del usuario. Utiliza la información más reciente para completar los campos del objeto JSON.
         """
+        system_prompt += f". La fecha de hoy es {datetime.today().date()}"
 
-        # Clasifica el mensaje del usuario
-        response = self.llm.invoke([SystemMessage(content=system_prompt), HumanMessage(content=chat_history)])
+        if isinstance(chat_history, list):
+            # Añadir el user_input al historial de chat
+            chat_history.append({"user": user_input, "assistant": ""})
+
+        history_text = "\n".join(
+            [f"Usuario: {e['user']}\nAsistente: {e.get('assistant', '')}" for e in chat_history]
+        ) if isinstance(chat_history, list) else chat_history
+
+        response = self.llm.invoke([SystemMessage(content=system_prompt), HumanMessage(content=history_text)])
+
+
         if response.content != "{}":
             return response.content
         return
 
 
-    def email_object(self, user_id):
+    def email_object(self, user_input, user_id):
         chat_history = self.toolkit._load_chat_history(user_id) or "No hay historial de chat"
         # Según el user_input, define a que servicio se deriva lo siguiente
         system_prompt = """
@@ -80,8 +91,17 @@ class ObjectCreator:
 
 
 
-        # Clasifica el mensaje del usuario
-        response = self.llm.invoke([SystemMessage(content=system_prompt), HumanMessage(content=chat_history)])
+        if isinstance(chat_history, list):
+            # Añadir el user_input al historial de chat
+            chat_history.append({"user": user_input, "assistant": ""})
+
+        history_text = "\n".join(
+            [f"Usuario: {e['user']}\nAsistente: {e.get('assistant', '')}" for e in chat_history]
+        ) if isinstance(chat_history, list) else chat_history
+
+        response = self.llm.invoke([SystemMessage(content=system_prompt), HumanMessage(content=history_text)])
+
+
         if response.content != "{}":
             return response.content
         return

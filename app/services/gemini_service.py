@@ -4,6 +4,7 @@ import os
 from dotenv import load_dotenv
 from app.data.prompts import system_prompt
 from app.services.toolkits import ToolkitService
+from datetime import datetime
 
 class IrisAI:
 
@@ -26,7 +27,7 @@ class IrisAI:
         vs = self.toolkit.get_vs()
         text = vs.search(user_input) or "No encontré información relevante en la base de datos."
 
-        system_message_content = system_prompt() + "\nFuente: protocoloIris.pdf\n" + "\n" + text
+        system_message_content = system_prompt() + "\nFuente: protocoloIris.pdf\n" + "\n" + text + f". La fecha de hoy es {datetime.today().date()}"
 
         messages = [SystemMessage(content=system_message_content)]
 

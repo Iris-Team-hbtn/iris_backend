@@ -70,7 +70,7 @@ class MainCaller:
 
         match response.content:
             case '2':
-                mail_obj = creator.email_object(user_id=user_id)
+                mail_obj = creator.email_object( user_input, user_id=user_id)
                 if mail_obj:
                     match = re.search(r"\{.*\}", mail_obj.strip(), re.DOTALL)
                     if match:
@@ -78,7 +78,7 @@ class MainCaller:
                         try:
                             email_obj = json.loads(json_text)
                             self.create_support_mail(email_obj)
-                            return "Tu consulta ha sido elevada a soporte con éxito."
+                            return "Hemos enviado tu consulta al equipo de la clínica y pronto recibirás una respuesta. ¡Gracias por tu paciencia!"
                         except json.JSONDecodeError:
                             print("Error al decodificar JSON, contenido inválido.")
                     else:
@@ -87,7 +87,8 @@ class MainCaller:
                 return iris.call_iris(user_input=user_input, user_id=user_id)
 
             case '3':
-                schedule_date = creator.date_object(user_id=user_id)
+                calendar = CalendarService()
+                schedule_date = creator.date_object(user_input, user_id=user_id)
                 print(f"Este es el string que salio del creador de objetos {schedule_date}")
                 if schedule_date:
                     match = re.search(r"\{.*\}", schedule_date.strip(), re.DOTALL)
@@ -97,14 +98,18 @@ class MainCaller:
                             date_obj = json.loads(json_text)
                             print(date_obj)
                             if date_obj:
-                                availability = eventscheduler.check(day=date_obj['day'], month=date_obj['month'], starttime=date_obj['starttime'])
-                                print(availability)
-                                if availability == 'Disponible':
-                                    self.create_event(date_obj)
-                                    return "Has sido agendado con éxito."
+                                emails = calendar.getUniqueAttendees()
+                                if date_obj["email"] in emails:
+                                    availability = eventscheduler.check(day=date_obj['day'], month=date_obj['month'], starttime=date_obj['starttime'])
+                                    print(availability)
+                                    if availability == 'Disponible':
+                                        self.create_event(date_obj)
+                                        return "Tu consulta ha sido agendada con éxito. Recuerda que nuestro horario de atención es de lunes a sábado, de 11:00 a 19:00. Te atenderemos en la fecha y hora seleccionadas. ¡Gracias por confiar en nosotros!"
+                                    else:
+                                        user_input += ". Los horarios disponibles para el dia que consulta el usuario son: " + availability
+                                        return iris.call_iris(user_input=user_input, user_id=user_id)
                                 else:
-                                    user_input += "Los horarios disponibles para el dia que consulta el usuario son: " + availability
-                                    return iris.call_iris(user_input=user_input, user_id=user_id)
+                                    return "Veo que ya te has agendado en nuestra clínica, si hay un error por favor comunícate con nosotros para ayudarte."
                         except json.JSONDecodeError:
                             print("Error al decodificar JSON, contenido inválido.")
                     else:

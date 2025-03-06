@@ -18,44 +18,59 @@ class EventScheduler:
             max_retries=2
         )
 
+    def validate_input(self, day, month, starttime):
+        """Validar que la entrada de día, mes y hora sea válida."""
+        if not (1 <= month <= 12):
+            raise ValueError("El mes debe estar entre 1 y 12.")
+        if not (1 <= day <= 31):  # Podrías agregar más validaciones si necesitas tener en cuenta los días por mes
+            raise ValueError("El día debe estar entre 1 y 31.")
+        if not (11 <= starttime <= 19):
+            raise ValueError("La hora debe estar entre 11 y 19.")
+        return True
 
     def check(self, day, month, starttime):
+        """Verificar disponibilidad para el día y hora solicitados."""
+
+        # Validar las entradas
+        try:
+            self.validate_input(day, month, starttime)
+        except ValueError as e:
+            return str(e)
+
         calendar = CalendarService()
         event_list = calendar.listEvents()
 
         # Horarios de atención de 11 a 19hs
-        available_hours = [f"{hour}:00" for hour in range(11, 20)]
+        available_hours = {f"{hour}:00" for hour in range(11, 20)}
 
-        # Filtrar eventos ocupados según el día proporcionado
-        occupied_hours = set()
+        # Agrupar eventos por fecha (día y mes) para una búsqueda más eficiente
+        events_by_date = {}
         for event in event_list:
-            # Asegurarse de que la fecha esté en un formato adecuado (asegúrate de que 'date' esté en formato ISO)
-            event_date = event['date']  # Suponiendo que la fecha es una cadena ISO 8601 (YYYY-MM-DDTHH:MM:SS)
-            event_datetime = datetime.strptime(event_date, "%Y-%m-%dT%H:%M:%S")
-            
-            # Verificar si el evento es para el mismo día que el solicitado
-            if event_datetime.day == day and event_datetime.month == month:
-                occupied_hours.add(event_datetime.strftime("%H:%M"))  # Agregar hora ocupada
+            event_date = event.get('date')
+            if event_date:
+                event_datetime = datetime.strptime(event_date, "%Y-%m-%dT%H:%M:%S")
+                event_key = f"{event_datetime.day}-{event_datetime.month}"  # Agrupamos por día y mes
+                event_hour = event_datetime.strftime("%H:%M")  # Extraemos solo la hora
 
-        # Determinar los horarios libres para ese día
-        free_hours = [hour for hour in available_hours if hour not in occupied_hours]
-        free_hours_str = "\n".join([f"- {hour}" for hour in free_hours])
+                if event_key not in events_by_date:
+                    events_by_date[event_key] = set()
+                events_by_date[event_key].add(event_hour)
 
-        # System prompt con los horarios disponibles para ese día específico
-        system_prompt = f"""
-        Tu tarea es verificar la disponibilidad para consultas de la clínica, basándote en los horarios disponibles de 11:00 a 19:00 hs, con una duración de una hora para cada consulta.
+        # Crear clave para el día solicitado
+        requested_date_key = f"{day}-{month}"
 
-        El usuario te proporcionará un día, mes y hora de inicio.
+        # Obtener las horas ocupadas para el día solicitado
+        occupied_hours = events_by_date.get(requested_date_key, set())
 
-        Reglas:
-        - Si el horario solicitado está disponible, responde solamente con "Disponible".
-        - Si el horario solicitado no está disponible, responde con los horarios libres para ese día.
-        - Si el usuario no proporciona una hora exacta, responde con los horarios disponibles para ese día.
+        # Normalizar starttime a formato "HH:00" (si no está en ese formato)
+        requested_time = f"{starttime:02d}:00" if isinstance(starttime, int) else starttime
 
-        Los siguientes son los horarios disponibles para el día solicitado:
-        {free_hours_str}
-        """
-
-        # Clasificar el mensaje del usuario
-        response = self.llm.invoke([SystemMessage(content=system_prompt), HumanMessage(content=f"Dia: {day} - Mes: {month}, Hora: {starttime}:00")])
-        return response.content
+        # Verificar disponibilidad de la hora solicitada
+        if requested_time in occupied_hours:
+            # Si la hora está ocupada y no es válida, mostrar los horarios disponibles
+            free_hours = available_hours - occupied_hours
+            free_hours_str = "\n".join([f"- {hour}" for hour in free_hours])
+            return f"Hora ocupada. Los siguientes horarios están disponibles:\n{free_hours_str}"
+        elif requested_time in available_hours:
+            return "Disponible"
+        return "Hora inválida"
