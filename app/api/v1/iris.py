@@ -65,7 +65,7 @@ class Calendar(Resource):
 
     @api.expect(model)
     @api.response(200, 'Answer retrieved correctly')
-    @api.response(400, 'There is a problem with Google Calendar')
+    @api.response(400, 'There is a problem with Google Calendar or Email invalid')
     def post(self):
         """Schedule an appointment to the clinic"""
         data = api.payload
@@ -79,6 +79,13 @@ class Calendar(Resource):
         email = data.get('email')
         starttime = data.get('starttime')
         year = data.get('year')
+        
+        # Instanciar el servicio de correo
+        mail_service = MailService()
+        # Validar el formato del email
+        if not mail_service.validate_email(email):
+            return {"error": "El formato del correo electrónico es inválido."}, 400
+        
         event_create = calendar.createEvent(month=month, day=day, email=email, startTime=starttime, year=year)
 
         if event_create:
