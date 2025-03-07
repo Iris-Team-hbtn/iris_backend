@@ -99,7 +99,8 @@ class MainCaller:
                             print(date_obj)
                             if date_obj:
                                 emails = calendar.getUniqueAttendees()
-                                if date_obj["email"] not in emails:
+                                print(emails)
+                                if date_obj["email"].lower() not in emails:
                                     availability = eventscheduler.check(day=date_obj['day'], month=date_obj['month'], starttime=date_obj['starttime'])
                                     print(availability)
                                     if availability == 'Disponible':
