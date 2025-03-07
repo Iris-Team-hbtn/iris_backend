@@ -130,6 +130,13 @@ class MainCaller:
         email = date_obj.get('email')
         starttime = date_obj.get('starttime')
         year = date_obj.get('year')
+
+        # Validar email antes de continuar
+        mail_service = MailService()
+        if not mail_service.validate_email(email):
+            print("El correo electrónico proporcionado no es válido.")
+            return
+
         event_create = calendar.createEvent(month=month, day=day, email=email, startTime=starttime, year=year)
 
         if event_create:
@@ -150,6 +157,11 @@ class MainCaller:
         fullname = email_obj.get('fullname')
         email = email_obj.get('email')
         question = email_obj.get('user_question')
+
+        # Validar el correo electrónico antes de enviar
+        if not mail_service.validate_email(email):
+            print("El correo electrónico para soporte no es válido.")
+            return
 
         support_mail_body = mail_service.build_body('user_question', {"fullname": fullname ,"user_email": email, "user_question": question})
         mail_service.send_email('user_question', support_mail_body, "yuntxwillover@gmail.com")

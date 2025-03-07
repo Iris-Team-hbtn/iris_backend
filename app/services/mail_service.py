@@ -1,4 +1,5 @@
 import os
+import re
 from email.message import EmailMessage
 from dotenv import load_dotenv
 import ssl
@@ -11,6 +12,18 @@ class MailService:
         """Carga la configuración del servidor SMTP desde variables de entorno."""
         self.username = os.getenv("SMTP_USERNAME")
         self.password = os.getenv("SMTP_PASSWORD")
+        
+        self.email_pattern = re.compile(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
+
+    def validate_email(self, email):
+        """
+        Validate email format using regex pattern
+        Args:
+            email (str): Email address to validate
+        Returns:
+            bool: True if email is valid, False otherwise
+        """
+        return bool(self.email_pattern.match(email))
 
     @staticmethod
     def build_body(subject, obj={}):

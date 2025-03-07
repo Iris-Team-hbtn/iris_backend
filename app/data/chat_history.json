@@ -144,5 +144,23 @@
             "user": "Me gustaria agendarme para una consulta el Lunes",
             "assistant": "Para poder agendar tu consulta, necesito tu nombre completo, correo electrónico, y la hora que te gustaría que sea el lunes.  ¿Puedes proporcionar esa información?"
         }
+    ],
+    "90f38b26-6b23-4ae7-9f9c-b2c9c8bbf67f": [
+        {
+            "user": "Hola?",
+            "assistant": "¡Hola! ¿En qué puedo ayudarte hoy?  ¿Tienes alguna pregunta sobre tratamientos capilares o deseas agendar una consulta?"
+        },
+        {
+            "user": "Me gustaria contactar con un humano",
+            "assistant": "Por supuesto.  Para poder contactarte con un miembro de nuestro equipo, necesito tu nombre completo y correo electrónico.  Por favor, proporciona esta información."
+        },
+        {
+            "user": "Aleberto casimiro, aksksk#kasksk.la,",
+            "assistant": "Lo siento, no puedo procesar el correo electrónico proporcionado.  Por favor, proporciona un correo electrónico válido."
+        },
+        {
+            "user": "Aleberto casimiro, alexisoblivion@gmail.com",
+            "assistant": "Gracias, Aleberto.  Un miembro de nuestro equipo se pondrá en contacto contigo a través de correo electrónico lo antes posible."
+        }
     ]
 }
