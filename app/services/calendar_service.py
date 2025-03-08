@@ -1,38 +1,28 @@
 import datetime as dt
 import os.path
-
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+from dotenv import load_dotenv
 
+
+load_dotenv()
 
 class CalendarService:
     
-    SCOPES = ["https://www.googleapis.com/auth/calendar"]
-    creds = None
+    API_KEY = os.getenv("CALENDAR_API_KEY")
+    service = None
     
     def __init__(self):
         self._auth()
         self.clinic_email = "yuntxwillover@gmail.com"
 
     def _auth(self):
-        base_dir = os.path.dirname(os.path.abspath(__file__))
-        credentials_path = os.path.join(base_dir, "credentials.json") 
-
-        if os.path.exists("token.json"):
-            self.creds = Credentials.from_authorized_user_file("token.json")
-        
-        if not self.creds or not self.creds.valid:
-            if self.creds and self.creds.expired and self.creds.refresh_token:
-                self.creds.refresh(Request())
-            else:
-                flow = InstalledAppFlow.from_client_secrets_file(credentials_path, self.SCOPES)
-                self.creds = flow.run_local_server(port=0)
-
-            with open("token.json", "w") as token:
-                token.write(self.creds.to_json())
+        try:
+            self.service = build("calendar", "v3", developerKey=self.API_KEY)
+            print("Autenticación exitosa con API Key.")
+        except HttpError as err:
+            print(f"Ocurrió un error al autenticar con la API: {err}")
+            self.service = None
 
     def listEvents(self):
         try:

@@ -162,5 +162,15 @@
             "user": "Aleberto casimiro, alexisoblivion@gmail.com",
             "assistant": "Gracias, Aleberto.  Un miembro de nuestro equipo se pondrá en contacto contigo a través de correo electrónico lo antes posible."
         }
+    ],
+    "a4aa7cdf-1bee-468e-b162-353271fbc12f": [
+        {
+            "user": "Hola Iris",
+            "assistant": "Hola. ¿En qué puedo ayudarte hoy?"
+        },
+        {
+            "user": "Me gustaria agendarme par auna consulta",
+            "assistant": "Por supuesto. Para agendar tu consulta, necesito tu nombre completo, correo electrónico, fecha y hora preferida.  ¿Podrías proporcionarme esa información?"
+        }
     ]
 }
