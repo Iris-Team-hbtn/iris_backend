@@ -99,7 +99,7 @@ class CalendarService:
         return event
     
     def getUniqueAttendees(self):
-        """Obtiene un conjunto de correos únicos de los asistentes a los eventos, excluyendo el de la clínica."""
+        """Get attendees from medic consultations already scheduled"""
         events = self.listEvents()
         unique_attendees = set()
         

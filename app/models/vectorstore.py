@@ -8,11 +8,11 @@ class VectorStore:
         self.nlp = spacy.load('es_core_news_sm')
         self.model = SentenceTransformer(model_name)
         
-        # Extraer, limpiar y tokenizar texto
+        # Clean and tokenize text
         raw_text = self._extract_text_from_pdf(pdf_path)
         self.sentences = self._tokenize_text(raw_text)
         
-        # Generar embeddings y construir índice FAISS
+        # Generate embeddings and create faiss index
         self.embeddings = self._create_embeddings(self.sentences)
         self.index = self._create_faiss_index(self.embeddings)
     
@@ -23,7 +23,7 @@ class VectorStore:
         return text
     
     def _tokenize_text(self, text):
-        text = ' '.join(text.split())  # Limpiar saltos de línea y espacios
+        text = ' '.join(text.split())  # Clean line jumps
         doc = self.nlp(text)
         return [sent.text for sent in doc.sents]
     

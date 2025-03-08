@@ -22,7 +22,7 @@ class ObjectCreator:
     def date_object(self, user_input, user_id):
         chat_history = self.toolkit._load_chat_history(user_id) or "No hay historial de chat"
         
-        # Según el user_input, define a que servicio se deriva lo siguiente
+        # We get data from user input and create a JSON object
         system_prompt = """
         Tu tarea es generar SOLO un objeto JSON con la información del usuario, sin ningún texto adicional.
         No supongas datos, si no los tienes no generes el objeto.
@@ -53,7 +53,7 @@ class ObjectCreator:
         system_prompt += f". La fecha de hoy es {datetime.today().date()}"
 
         if isinstance(chat_history, list):
-            # Añadir el user_input al historial de chat
+            # Add user's input to chat history
             chat_history.append({"user": user_input, "assistant": ""})
 
         history_text = "\n".join(
@@ -70,7 +70,7 @@ class ObjectCreator:
 
     def email_object(self, user_input, user_id):
         chat_history = self.toolkit._load_chat_history(user_id) or "No hay historial de chat"
-        # Según el user_input, define a que servicio se deriva lo siguiente
+        # Get user data to create a JSON Object
         system_prompt = """
         Tu tarea es generar SOLO un objeto JSON con la información del usuario, sin ningún texto adicional.
 
@@ -92,7 +92,7 @@ class ObjectCreator:
 
 
         if isinstance(chat_history, list):
-            # Añadir el user_input al historial de chat
+            # Add user input to chat history
             chat_history.append({"user": user_input, "assistant": ""})
 
         history_text = "\n".join(

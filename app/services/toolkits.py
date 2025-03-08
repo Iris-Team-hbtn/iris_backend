@@ -13,11 +13,11 @@ class ToolkitService:
     HISTORY_FILE = os.path.join(BASE_DIR, "..", "data", "chat_history.json")
 
     def __init__(self):
-        self.chat_history = {}  # Historial de usuarios con límite
+        self.chat_history = {}  # User's history
         self.message_counter = {} #Object by user_id, contains counter for summarize chat history
 
     def get_vs(self):
-        """Obtiene la instancia del vector store desde la configuración de Flask."""
+        """Gets VectorStore instance from app context."""
         with current_app.app_context():
             return current_app.config["vs"]
 
@@ -61,6 +61,6 @@ def get_or_create_user_id():
     if not user_id:
         user_id = str(uuid.uuid4())
         resp = make_response()
-        resp.set_cookie("user_id", user_id, max_age=24*60*60)  # Cookie por 1 día
+        resp.set_cookie("user_id", user_id, max_age=24*60*60)  # Cookie for 1 day
         return user_id
     return user_id

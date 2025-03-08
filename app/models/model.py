@@ -17,7 +17,7 @@ firebaseConfig = {
 def createVS():
   firebase = pyrebase.initialize_app(firebaseConfig)
   storage = firebase.storage()
-
+  # Download PDF from Firebase
   storage.child("protocoloIris.pdf").download(filename="protocoloIris.pdf", path="./")
 
   return vectorstore('./protocoloIris.pdf')

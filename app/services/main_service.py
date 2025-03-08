@@ -26,7 +26,7 @@ class MainCaller:
         self.toolkit = ToolkitService()
 
     def call(self, user_input, user_id):
-        # Instanciamos servicios
+        # Instanciating services
         iris = IrisAI()
         creator = ObjectCreator()
         eventscheduler = EventScheduler()
@@ -49,7 +49,7 @@ class MainCaller:
             print(summary_response)
             chat_history = [{"user": "Resumen", "assistant": summary_response.content}]
 
-        # Según el user_input, define a que servicio se deriva lo siguiente
+        # We categorize the chat history direction and take actions with that context
         system_prompt = """
         Tu rol es clasificar los mensajes dentro de las siguientes categorías:
         1. Conversación con la IA
@@ -64,7 +64,7 @@ class MainCaller:
                 [f"Usuario: {e['user']}\nAsistente: {e['assistant']}" for e in chat_history]
             ) or ""
         system_prompt += history_text
-        # Clasifica el mensaje del usuario
+        # We ask the clasification
         response = self.llm.invoke([SystemMessage(content=system_prompt), HumanMessage(content=user_input)])
         print(f"La categoría del mensaje es: {response.content}")
 
@@ -119,7 +119,7 @@ class MainCaller:
                 return iris.call_iris(user_input=user_input, user_id=user_id)
 
             case _: 
-                # Situación '1' o cualquier otra
+                # Situation '1' or anything else
                 return iris.call_iris(user_input=user_input, user_id=user_id)
 
     @staticmethod
@@ -132,7 +132,7 @@ class MainCaller:
         starttime = date_obj.get('starttime')
         year = date_obj.get('year')
 
-        # Validar email antes de continuar
+        # Validating email
         mail_service = MailService()
         if not mail_service.validate_email(email):
             print("El correo electrónico proporcionado no es válido.")
@@ -159,7 +159,7 @@ class MainCaller:
         email = email_obj.get('email')
         question = email_obj.get('user_question')
 
-        # Validar el correo electrónico antes de enviar
+        # Validating email
         if not mail_service.validate_email(email):
             print("El correo electrónico para soporte no es válido.")
             return

@@ -21,7 +21,7 @@ class IrisAI:
         self.toolkit = ToolkitService()
 
     def call_iris(self, user_input, user_id):
-        # Obtener historial de chat limitado
+        # Getting chat history
         chat_history = self.toolkit._load_chat_history(user_id)
 
         vs = self.toolkit.get_vs()
@@ -36,9 +36,9 @@ class IrisAI:
             messages.append(AIMessage(content=entry["assistant"]))
 
         messages.append(HumanMessage(content=user_input))
-        # Generar respuesta
+        # Generating answer
         response = self.llm.invoke(messages)
-        # Guardar en historial
+        # Saving chat history
         chat_history.append({"user": user_input, "assistant": response.content})
         self.toolkit._save_chat_history(user_id, chat_history)
 

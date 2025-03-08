@@ -30,7 +30,7 @@ class Query(Resource):
     @api.response(400, "Datos de entrada inválidos")
     @api.response(404, "No hay información disponible")
     def post(self):
-        """Procesa una pregunta y devuelve la respuesta de Iris en streaming"""
+        """Sends user input to Iris so she can generate an answer"""
         data = api.payload
         if not data or "query" not in data:
             return {"error": "Datos de entrada inválidos."}, 400
@@ -42,7 +42,7 @@ class Query(Resource):
         if not response:
             return {"error": "There is no information about this."}, 404
     
-        #Configuramos la respuesta en cookie
+        # Setting up Cookie
         resp = {"response": response}
         response = make_response(jsonify(resp), 200)
         response.set_cookie('user_id', user_id, max_age=24*60*60, path='/', httponly=True, secure=True, samesite="None")
@@ -80,9 +80,9 @@ class Calendar(Resource):
         starttime = data.get('starttime')
         year = data.get('year')
         
-        # Instanciar el servicio de correo
+        # Instanciating mail service
         mail_service = MailService()
-        # Validar el formato del email
+        # Validating email
         if not mail_service.validate_email(email):
             return {"error": "El formato del correo electrónico es inválido."}, 400
         

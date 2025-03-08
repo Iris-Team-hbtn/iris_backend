@@ -9,7 +9,7 @@ load_dotenv()
 
 class MailService:
     def __init__(self):
-        """Carga la configuración del servidor SMTP desde variables de entorno."""
+        """Loads credentials into OS."""
         self.username = os.getenv("SMTP_USERNAME")
         self.password = os.getenv("SMTP_PASSWORD")
         
@@ -69,7 +69,7 @@ class MailService:
         return body
 
     def send_email(self, subject, body, destination):
-        """Envía un correo con la pregunta del usuario a la clínica."""
+        """We send a mail with subject options"""
         if not self.username or not self.password:
             raise ValueError("Faltan configuraciones de SMTP en el entorno")
 

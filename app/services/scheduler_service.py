@@ -19,19 +19,19 @@ class EventScheduler:
         )
 
     def validate_input(self, day, month, starttime):
-        """Validar que la entrada de día, mes y hora sea válida."""
+        """Validates date."""
         if not (1 <= month <= 12):
             raise ValueError("El mes debe estar entre 1 y 12.")
-        if not (1 <= day <= 31):  # Podrías agregar más validaciones si necesitas tener en cuenta los días por mes
+        if not (1 <= day <= 31):
             raise ValueError("El día debe estar entre 1 y 31.")
         if not (11 <= starttime <= 19):
             raise ValueError("La hora debe estar entre 11 y 19.")
         return True
 
     def check(self, day, month, starttime):
-        """Verificar disponibilidad para el día y hora solicitados."""
+        """Checks availability"""
 
-        # Validar las entradas
+        # Validate input
         try:
             self.validate_input(day, month, starttime)
         except ValueError as e:
@@ -40,10 +40,10 @@ class EventScheduler:
         calendar = CalendarService()
         event_list = calendar.listEvents()
 
-        # Horarios de atención de 11 a 19hs
-        available_hours = {f"{hour}:00" for hour in range(11, 20)}
+        # Attention hours from 11 to 18
+        available_hours = {f"{hour}:00" for hour in range(11, 19)}
 
-        # Agrupar eventos por fecha (día y mes) para una búsqueda más eficiente
+        # Grouping up day-month
         events_by_date = {}
         for event in event_list:
             event_date = event.get('date')
@@ -56,18 +56,18 @@ class EventScheduler:
                     events_by_date[event_key] = set()
                 events_by_date[event_key].add(event_hour)
 
-        # Crear clave para el día solicitado
+        # Creates a key for that day
         requested_date_key = f"{day}-{month}"
 
-        # Obtener las horas ocupadas para el día solicitado
+        # Getting occupied hours for that date
         occupied_hours = events_by_date.get(requested_date_key, set())
 
-        # Normalizar starttime a formato "HH:00" (si no está en ese formato)
+        # Starttime format -> "HH:00"
         requested_time = f"{starttime:02d}:00" if isinstance(starttime, int) else starttime
 
-        # Verificar disponibilidad de la hora solicitada
+        # Checks if requestes time its occupied
         if requested_time in occupied_hours:
-            # Si la hora está ocupada y no es válida, mostrar los horarios disponibles
+            # If not available, we show available hours
             free_hours = available_hours - occupied_hours
             free_hours_str = "\n".join([f"- {hour}" for hour in free_hours])
             return f"Hora ocupada. Los siguientes horarios están disponibles:\n{free_hours_str}"
