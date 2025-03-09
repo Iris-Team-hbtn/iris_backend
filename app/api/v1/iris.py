@@ -45,7 +45,7 @@ class Query(Resource):
         # Setting up Cookie
         resp = {"response": response}
         response = make_response(jsonify(resp), 200)
-        response.set_cookie('user_id', user_id, max_age=24*60*60, path='/', httponly=True, secure=True, samesite="None")
+        response.set_cookie('user_id', user_id, max_age=24*60*60, path='/', domain="http://104.197.21.173", httponly=True, secure=True, samesite="None")
         print(response)
         return response
 
