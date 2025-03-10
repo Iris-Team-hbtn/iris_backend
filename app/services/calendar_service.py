@@ -1,11 +1,9 @@
 import datetime as dt
 import os.path
+
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from dotenv import load_dotenv
 
-
-load_dotenv()
 
 class CalendarService:
     
@@ -26,12 +24,11 @@ class CalendarService:
 
     def listEvents(self):
         try:
-            service = build("calendar", "v3", credentials=self.creds)
             now = dt.datetime.now()
             time_min = now.isoformat() + "Z"
             time_max = (now + dt.timedelta(weeks=2)).isoformat() + "Z"
 
-            event_result = service.events().list(
+            event_result = self.service.events().list(
                 calendarId="primary",
                 timeMin=time_min,
                 timeMax=time_max,
@@ -47,7 +44,6 @@ class CalendarService:
             event_list = []
             for event in events:
                 start = event["start"].get("dateTime", event["start"].get("date"))
-                start = start[:-6]
 
                 attendees = event.get("attendees", [])
                 attendee_emails = {a["email"] for a in attendees if a["email"] != self.clinic_email}
@@ -57,10 +53,12 @@ class CalendarService:
 
         except HttpError as error:
             print("An error occurred:", error)
+            return []
 
     def createEvent(self, month, day, startTime, email, year=2025):
-        print(month, day, startTime, email, year)
-        service = build("calendar", "v3", credentials=self.creds)
+        if not self.service:
+            print("Error: No se pudo autenticar con la API.")
+            return None
 
         start_datetime = dt.datetime(year, month, day, startTime, 0, 0).isoformat()
         end_datetime = dt.datetime(year, month, day, startTime + 1, 0, 0).isoformat()
@@ -84,9 +82,13 @@ class CalendarService:
             ]
         }
 
-        event = service.events().insert(calendarId="primary", body=event).execute()
-        print(f"Event created {event.get('htmlLink')}")
-        return event
+        try:
+            event = self.service.events().insert(calendarId="primary", body=event).execute()
+            print(f"Event created {event.get('htmlLink')}")
+            return event
+        except HttpError as error:
+            print("An error occurred:", error)
+            return None
     
     def getUniqueAttendees(self):
         """Get attendees from medic consultations already scheduled"""
