@@ -58,11 +58,15 @@ class Calendar(Resource):
         """Get all events in the next two weeks"""
         event_list = calendar.listEvents()
 
-        print(event_list)
-        if not event_list:
-            return {"message": 'No appointments scheduled'}, 404
-        return {"events": event_list}, 200
+        # Filtrar y mantener solo la clave 'date' en cada evento
+        filtered_event_list = [
+            {"date": event["date"]} for event in event_list if "date" in event
+        ]
 
+        if not filtered_event_list:
+            return {"message": 'No appointments scheduled'}, 404
+
+        return {"events": filtered_event_list}, 200
     @api.expect(model)
     @api.response(200, 'Answer retrieved correctly')
     @api.response(400, 'There is a problem with Google Calendar or Email invalid')
