@@ -81,6 +81,6 @@ class CalendarService:
         unique_attendees = set()
         
         for event in events:
-            unique_attendees.update(event["attendees"])
-
+            unique_attendees.update(a["email"] for a in event.get("attendees", []))
+        
         return unique_attendees
