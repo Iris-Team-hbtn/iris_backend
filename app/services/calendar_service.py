@@ -1,57 +1,36 @@
+import pickle
 import datetime as dt
-import os.path
-
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
-
 class CalendarService:
-    
-    API_KEY = os.getenv("CALENDAR_API_KEY")
-    service = None
-    
     def __init__(self):
-        self._auth()
         self.clinic_email = "yuntxwillover@gmail.com"
+        self._auth()
 
     def _auth(self):
-        try:
-            self.service = build("calendar", "v3", developerKey=self.API_KEY)
-            print("Autenticación exitosa con API Key.")
-        except HttpError as err:
-            print(f"Ocurrió un error al autenticar con la API: {err}")
-            self.service = None
+        with open("token.pickle", "rb") as token_file:
+            self.creds = pickle.load(token_file)
+
+        self.service = build("calendar", "v3", credentials=self.creds)
 
     def listEvents(self):
         try:
-            now = dt.datetime.now()
-            time_min = now.isoformat() + "Z"
-            time_max = (now + dt.timedelta(weeks=2)).isoformat() + "Z"
+            now = dt.datetime.now().isoformat() + "Z"
+            time_max = (dt.datetime.now() + dt.timedelta(weeks=2)).isoformat() + "Z"
 
             event_result = self.service.events().list(
                 calendarId="primary",
-                timeMin=time_min,
+                timeMin=now,
                 timeMax=time_max,
                 singleEvents=True,
                 orderBy="startTime"
             ).execute()
 
             events = event_result.get("items", [])
-            if not events:
-                print("No upcoming events found")
-                return []
+            return [{"date": e["start"].get("dateTime", e["start"].get("date"))} for e in events]
 
-            event_list = []
-            for event in events:
-                start = event["start"].get("dateTime", event["start"].get("date"))
-
-                attendees = event.get("attendees", [])
-                attendee_emails = {a["email"] for a in attendees if a["email"] != self.clinic_email}
-
-                event_list.append({'date': start, 'attendees': list(attendee_emails)})
-            return event_list
-
-        except HttpError as error:
+        except Exception as error:
             print("An error occurred:", error)
             return []
 
