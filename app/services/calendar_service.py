@@ -28,7 +28,13 @@ class CalendarService:
             ).execute()
 
             events = event_result.get("items", [])
-            return [{"date": e["start"].get("dateTime", e["start"].get("date"))} for e in events]
+            return [
+                {
+                    "date": e["start"].get("dateTime", e["start"].get("date")),
+                    "attendees": e.get("attendees", [])
+                }
+                for e in events
+            ]
 
         except Exception as error:
             print("An error occurred:", error)
