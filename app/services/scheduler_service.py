@@ -48,7 +48,7 @@ class EventScheduler:
         for event in event_list:
             event_date = event.get('date')
             if event_date:
-                event_datetime = datetime.strptime(event_date, "%Y-%m-%dT%H:%M:%S")
+                event_datetime = datetime.fromisoformat(event_date)
                 event_key = f"{event_datetime.day}-{event_datetime.month}"  # Agrupamos por día y mes
                 event_hour = event_datetime.strftime("%H:%M")  # Extraemos solo la hora
 
