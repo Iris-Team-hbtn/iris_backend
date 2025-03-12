@@ -9,7 +9,7 @@ class CalendarService:
         self._auth()
 
     def _auth(self):
-        with open("token.pickle", "rb") as token_file:
+        with open("app/services/token.pickle", "rb") as token_file:
             self.creds = pickle.load(token_file)
 
         self.service = build("calendar", "v3", credentials=self.creds)
