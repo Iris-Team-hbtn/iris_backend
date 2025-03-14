@@ -44,7 +44,6 @@ class MainCaller:
             history_text = "\n".join(
                 [f"Usuario: {e['user']}\nAsistente: {e['assistant']}" for e in chat_history]
             )
-            print(f"history text es: {history_text}")
             summary_response = self.llm.invoke([SystemMessage(content=summary_prompt), HumanMessage(content=history_text)])
             print(summary_response)
             chat_history = [{"user": "Resumen", "assistant": summary_response.content}]
@@ -66,7 +65,6 @@ class MainCaller:
         system_prompt += history_text
         # We ask the clasification
         response = self.llm.invoke([SystemMessage(content=system_prompt), HumanMessage(content=user_input)])
-        print(f"La categoría del mensaje es: {response.content}")
 
         match response.content:
             case '2':
@@ -89,7 +87,6 @@ class MainCaller:
             case '3':
                 calendar = CalendarService()
                 schedule_date = creator.date_object(user_input, user_id=user_id)
-                print(f"Este es el string que salio del creador de objetos {schedule_date}")
                 if schedule_date:
                     match = re.search(r"\{.*\}", schedule_date.strip(), re.DOTALL)
                     if match:
@@ -99,7 +96,6 @@ class MainCaller:
                             print(date_obj)
                             if date_obj:
                                 emails = calendar.getUniqueAttendees()
-                                print(emails)
                                 if date_obj["email"].lower() not in emails:
                                     availability = eventscheduler.check(day=date_obj['day'], month=date_obj['month'], starttime=date_obj['starttime'])
                                     print(availability)
